@@ -1,0 +1,58 @@
+.root {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    color: var(--color-text);
+  }
+  
+  /* Variants */
+  .inline { display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    color: var(--color-text); 
+}
+  .card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-muted);
+    max-width: 260px;
+  }
+  
+  /* Status text per-variant (optional fine-tuning) */
+  .statusInline { font-size: 0.9rem; opacity: 0.85; }
+  .statusCard   { font-size: 0.9rem; font-weight: 500; }
+  
+  /* Button base */
+  .button {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s, opacity 0.15s;
+  }
+  
+  /* Button visual variants */
+  .primary {
+    background: var(--color-accent);
+    color: #fff;
+    border: 1px solid var(--color-accent);
+    &:hover, &:focus-visible { background: #0055cc; border-color: #0055cc; outline: none; }
+  }
+  
+  .ghost {
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    &:hover, &:focus-visible { background: var(--color-muted); border-color: var(--color-accent); outline: none; }
+  }
+  
+  .button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }  

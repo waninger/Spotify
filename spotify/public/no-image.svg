@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">No image available</title>
+  <desc id="desc">A neutral image placeholder with a picture frame, sun, and mountains.</desc>
+
+  <defs>
+    <!-- Subtle background -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ECEFF3"/>
+      <stop offset="100%" stop-color="#DDE2E9"/>
+    </linearGradient>
+    <!-- CSS vars so we can adjust for light/dark -->
+    <style>
+      :root {
+        --ni-bg: url(#bg);
+        --ni-stroke: #8A93A5;
+        --ni-accent: #B7C0CF;
+        --ni-text: #6B7280;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --ni-bg: #20242B;
+          --ni-stroke: #9DA7BB;
+          --ni-accent: #3B4351;
+          --ni-text: #B8C0CC;
+        }
+      }
+      text { font: 600 13px/1.2 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial,sans-serif; }
+    </style>
+  </defs>
+
+  <!-- Card background -->
+  <rect x="0.5" y="0.5" width="255" height="255" rx="16" fill="var(--ni-bg)" stroke="#C9D0DA" stroke-opacity="0.35"/>
+
+  <!-- Picture frame (centered) -->
+  <rect x="40" y="44" width="176" height="128" rx="12"
+        fill="none" stroke="var(--ni-stroke)" stroke-width="8" stroke-linejoin="round"/>
+
+  <!-- Sun -->
+  <circle cx="82" cy="82" r="12" fill="var(--ni-stroke)"/>
+
+  <!-- Mountains (balanced polygon) -->
+  <path d="M56 164 L96 124 L128 152 L152 132 L200 164 Z"
+        fill="var(--ni-accent)"/>
+
+  <!-- Optional subtle broken-image slash (perfectly centered/straight) -->
+  <path d="M56 60 L200 156" stroke="var(--ni-stroke)" stroke-width="6" stroke-linecap="round" opacity="0.18"/>
+
+  <!-- Caption -->
+  <text x="128" y="228" text-anchor="middle" fill="var(--ni-text)">No Image Available</text>
+</svg>

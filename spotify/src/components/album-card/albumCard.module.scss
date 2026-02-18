@@ -1,0 +1,25 @@
+.container{
+    background:transparent;
+    display:flex;
+    flex-direction:row;
+    align-items: center;
+    width: 100%;
+    padding: .5rem;
+    }
+
+.name{
+    color:var(--color-text);
+    font-size:large;
+    font-weight:bold;
+}
+
+.artist{
+    color:var(--color-text);
+    font-size:14px;
+}
+
+.time{
+    color:var(--color-text);
+    font-size:large;
+    margin-left: auto;
+}

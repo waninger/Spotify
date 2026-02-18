@@ -1,0 +1,37 @@
+/* RESET / NORMALIZER SECTION */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+  
+  /* LINKS */
+  a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* BUTTONS */
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+  
+  /* HEADINGS */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 0.5em;
+  }
+  

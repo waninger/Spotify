@@ -1,0 +1,24 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+    max-width: 80rem;
+    margin: 0 auto;
+    background: var(--color-background);
+}
+
+.searchList {
+    list-style: none;
+    overflow: auto;
+    width: 80%;
+    display: flex column;
+    align-items: center;
+}
+
+.listItem {
+    display: inline-flex;
+    font-size: large;
+    align-items: center;
+    width: 100%;
+}

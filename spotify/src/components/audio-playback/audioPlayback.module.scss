@@ -1,0 +1,18 @@
+.button{
+    border: none;
+    padding: 0.5rem 1rem;
+    display: flex;
+    height: 100%;
+    width: fit-content;
+    cursor: pointer;
+    background: transparent;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
+    height: 100%;
+    width: 100%;
+    max-width: 24px;
+    fill: var(--color-text);
+}

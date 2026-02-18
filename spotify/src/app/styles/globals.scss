@@ -1,0 +1,8 @@
+@use './reset' as *;
+@use './variables.scss' as *;
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-inter);
+}
