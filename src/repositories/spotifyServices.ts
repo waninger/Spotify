@@ -20,7 +20,14 @@ export const spotifySearchService: SearchService = {
     type: SearchType,
     limit?: number,
   ): Promise<SearchResult | null> {
-    const accessToken = await getSpotifyAccessToken();
+    let accessToken: string;
+    try {
+      accessToken = await getSpotifyAccessToken();
+    } catch (error) {
+      console.error("Error fetching Spotify access token:", error);
+      return null;
+    }
+    
     const url = `${SPOTIFY_API_BASE_URL}/search?q=${encodeURIComponent(query)}&type=${type}&limit=${limit || 20}`;
     const response = await fetch(url, {
       method: "GET",
