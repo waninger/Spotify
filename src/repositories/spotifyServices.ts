@@ -10,7 +10,7 @@ import {
   SearchType,
 } from "./interfaces";
 import { Album, album } from "../spotyfi-utils/mock-album";
-import { getSpotifyAccessToken } from "@/repositories/accessToken";
+import { getSpotifyAccessToken } from "../repositories/accessToken";
 
 const SPOTIFY_API_BASE_URL = "https://api.spotify.com/v1";
 
@@ -20,6 +20,7 @@ export const spotifySearchService: SearchService = {
     type: SearchType,
     limit?: number,
   ): Promise<SearchResult | null> {
+    console.log(`Fetching search with: ${query} ${type} ${limit}`);
     let accessToken: string;
     try {
       accessToken = await getSpotifyAccessToken();
@@ -27,7 +28,7 @@ export const spotifySearchService: SearchService = {
       console.error("Error fetching Spotify access token:", error);
       return null;
     }
-    
+
     const url = `${SPOTIFY_API_BASE_URL}/search?q=${encodeURIComponent(query)}&type=${type}&limit=${limit || 20}`;
     const response = await fetch(url, {
       method: "GET",
@@ -40,6 +41,7 @@ export const spotifySearchService: SearchService = {
       return null;
     }
     const data = await response.json();
+    console.log("Fetched search data:", data);
     return data as SearchResult;
   },
 };
@@ -115,6 +117,43 @@ export const spotyfiAlbumService: AlbumService = {
     }
     const data = await response.json();
     return data.albums as Album[];
+  },
+};
+
+export const spotyfiArtistService: ArtistService = {
+  async getOne(id: string): Promise<Artist | null> {
+    console.log(`Fetching artist with ID: ${id}`);
+    const accessToken = await getSpotifyAccessToken();
+    const url = `${SPOTIFY_API_BASE_URL}/artists/${id}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!response.ok) {
+      console.error(
+        `Spotify API error: ${response.status} ${response.statusText}`,
+      );
+      return null;
+    }
+    const data = await response.json();
+    console.log("Fetched artist data:", data);
+    return data as Artist;
+  },
+  async getMany(ids: string[]): Promise<Artist[] | null> {
+    const accessToken = await getSpotifyAccessToken();
+    const url = `${SPOTIFY_API_BASE_URL}/artists?ids=${ids.join(",")}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!response.ok) {
+      console.error(
+        `Spotify API error: ${response.status} ${response.statusText}`,
+      );
+      return null;
+    }
+    const data = await response.json();
+    return data.artists as Artist[];
   },
 };
 
