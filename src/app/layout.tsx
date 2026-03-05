@@ -1,7 +1,7 @@
 import "./styles/globals.scss";
 import { Providers } from "../providers/providers";
 import { getRequestContext } from "../utils/requestContext";
-import { Theme } from "./types/theme";
+import { Theme } from "@/types/theme";
 import { kanit } from "./styles/fonts";
 import Header from "../components/header/header";
 

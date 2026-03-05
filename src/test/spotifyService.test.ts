@@ -1,14 +1,19 @@
 import { expect, test } from "vitest";
-import { songProvider, albumProvider, artistProvider, musicSearchProvider } from "../repositories/repositoryIndex";
+import {
+  songProvider,
+  albumProvider,
+  artistProvider,
+  musicSearchProvider,
+} from "../repositories/repositoryIndex";
 import { getSpotifyAccessToken } from "../repositories/accessToken";
 import { SearchType } from "../repositories/interfaces";
 
 const SONG_ID = "3n3Ppam7vgaVa1iaRUc9Lp";
-const ARTIST_ID = "0C0XlULifJtAgn6ZNCW2eu"
-const ALBUM_ID = "4BbsHmXEghoPPevQjPnHXx"
-const SEARCH_TERM = "The Killers"
-const SEARCH_TYPE = "track" as SearchType
-const SEARCH_LIMIT = 1
+const ARTIST_ID = "0C0XlULifJtAgn6ZNCW2eu";
+const ALBUM_ID = "4BbsHmXEghoPPevQjPnHXx";
+const SEARCH_TERM = "The Killers";
+const SEARCH_TYPE = "track" as SearchType;
+const SEARCH_LIMIT = 1;
 const DEV_MODE = process.env.TEST_ENV === "dev";
 
 test.skipIf(DEV_MODE)("Get spotify access token", async () => {
@@ -50,10 +55,11 @@ test("Get a non null answer from albumService", async () => {
 });
 
 test("Get a non null answer from searchService", async () => {
-  const searchResults = await musicSearchProvider.search(SEARCH_TERM, SEARCH_TYPE, SEARCH_LIMIT);
+  const searchResults = await musicSearchProvider.search(
+    SEARCH_TERM,
+    SEARCH_TYPE,
+    SEARCH_LIMIT,
+  );
 
-  expect(searchResults).not.toBeNull()
+  expect(searchResults).not.toBeNull();
 });
-
-
-

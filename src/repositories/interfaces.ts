@@ -1,7 +1,7 @@
 import { Song } from "../spotyfi-utils/mock-song";
 import { Artist } from "../spotyfi-utils/mock-artist";
 import { Album } from "../spotyfi-utils/mock-album";
-
+import { Playlist } from "../types/playList";
 export interface SongService {
   getOne: (id: string) => Promise<Song | null>;
   getMany: (ids: string[]) => Promise<Song[] | null>;
@@ -16,7 +16,10 @@ export interface AlbumService {
   getOne: (id: string) => Promise<Album | null>;
   getMany: (ids: string[]) => Promise<Album[] | null>;
 }
-
+export interface PlaylistService {
+  getList: (listId: string) => Promise<Playlist | null>;
+  getAll: (userId:string) => Promise<Playlist[] | null>;
+}
 export type SearchType = "track" | "artist" | "album" | "playlist";
 export type SearchResult = {
   tracks: {
@@ -47,7 +50,6 @@ export type SearchResult = {
     previous: null;
   };
 };
-
 export type SearchResultSong = {
   id: string;
   name: string;
@@ -108,4 +110,4 @@ export interface SearchService {
     type: SearchType,
     limit?: number,
   ) => Promise<SearchResult | null>;
-};
+}

@@ -17,8 +17,9 @@ export async function POST(req: NextRequest) {
   response.cookies.set("theme", theme, {
     path: "/",
     maxAge: 60 * 60 * 24 * 30, // 30 days
-    sameSite: "lax",
-    httpOnly: false,
+    sameSite: "strict",
+    httpOnly: true,
+    secure: true,
   });
 
   return response;
