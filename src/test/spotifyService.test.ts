@@ -7,8 +7,10 @@ import {
 } from "../repositories/repositoryIndex";
 import { getSpotifyAccessToken } from "../repositories/accessToken";
 import { SearchType } from "../repositories/interfaces";
+import { playlist } from "@/spotyfi-utils/mock-playlist";
 
 const SONG_ID = "3n3Ppam7vgaVa1iaRUc9Lp";
+const SONGLIST = playlist.songs
 const ARTIST_ID = "0C0XlULifJtAgn6ZNCW2eu";
 const ALBUM_ID = "4BbsHmXEghoPPevQjPnHXx";
 const SEARCH_TERM = "The Killers";
@@ -16,16 +18,28 @@ const SEARCH_TYPE = "track" as SearchType;
 const SEARCH_LIMIT = 1;
 const DEV_MODE = process.env.TEST_ENV === "dev";
 
+
 test.skipIf(DEV_MODE)("Get spotify access token", async () => {
   const accessToken = await getSpotifyAccessToken();
 
   expect(accessToken).not.toBeNull();
 });
 
-test("Get a non null answer from songService", async () => {
+test("Get a non null answer from songService getOne", async () => {
   const song = await songProvider.getOne(SONG_ID);
 
   expect(song).toMatchObject({
+    id: expect.any(String),
+    name: expect.any(String),
+    duration_ms: expect.any(Number),
+    type: "track",
+  });
+});
+
+test("Get a non null answer from songService getMany", async () => {
+  const songs = await songProvider.getMany(SONGLIST);
+  expect(songs?.length).not.toBeNull();
+  expect(songs?.pop()).toMatchObject({
     id: expect.any(String),
     name: expect.any(String),
     duration_ms: expect.any(Number),

@@ -65,21 +65,9 @@ export const spotifySongService: SongService = {
     console.log("Fetched song data:", data);
     return data as Song;
   },
-  async getMany(ids: string[]): Promise<Song[] | null> {
-    const accessToken = await getSpotifyAccessToken();
-    const url = `${SPOTIFY_API_BASE_URL}/tracks?ids=${ids.join(",")}`;
-    const response = await fetch(url, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    if (!response.ok) {
-      console.error(
-        `Spotify API error: ${response.status} ${response.statusText}`,
-      );
-      return null;
-    }
-    const data = await response.json();
-    return data.tracks as Song[];
+  async getMany(ids: string[]): Promise<Song[]> {
+    const songs = await Promise.all(ids.map((id) => this.getOne(id)));
+    return songs.filter((song): song is Song => song !== null);
   },
 };
 
@@ -164,7 +152,8 @@ export const spotifyMockSongService: SongService = {
   },
   async getMany(ids: string[]): Promise<Song[] | null> {
     console.log(ids);
-    throw new Error("Function not implemented.");
+    const songs: Song[] = Array(5).fill(song)
+    return songs
   },
 };
 

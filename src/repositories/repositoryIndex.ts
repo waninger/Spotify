@@ -1,6 +1,6 @@
 import { spotifyMockSongService, spotyfiMockArtistService, spotyfiMockAlbumService, spotifyMockSearchService, spotifySearchService, spotifySongService, spotyfiAlbumService, spotyfiArtistService} from "./spotifyServices";
 import { SongService, ArtistService, AlbumService, SearchService, PlaylistService } from "./interfaces";
-import { playlistMockRepository } from "./playListRepository"
+import { playlistMockRepository } from "./playlistRepository"
 
 export const songProvider : SongService = process.env.USE_SPOTIFY_API == "true" ? spotifySongService : spotifyMockSongService // change dependence on development vs production search service here
 export const artistProvider : ArtistService = process.env.USE_SPOTIFY_API == "true" ? spotyfiArtistService : spotyfiMockArtistService // no production api implemented yet

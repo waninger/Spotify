@@ -8,7 +8,7 @@ type SongCardProps = { song: Song };
 export function SongCard(props: SongCardProps) {
   return (
     <div className={styles.container}>
-      {props.song.preview_url && <AudioPlayback src={props.song.preview_url} />}
+      {props.song.preview_url ? <AudioPlayback src={props.song.preview_url} /> : <div className={styles.filler}/>}
       <div>
         <Link href={`/song/${props.song.id}`}>
           <div className={styles.name}>{props.song.name}</div>
