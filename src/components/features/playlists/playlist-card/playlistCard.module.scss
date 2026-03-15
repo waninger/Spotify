@@ -1,0 +1,21 @@
+.container{
+    background:transparent;
+    display:flex;
+    flex-direction:row;
+    align-items: center;
+    width: 100%;
+    padding: .5rem;
+}
+
+.name{
+    color:var(--color-text);
+    font-size:large;
+    font-weight:bold;
+}
+
+.filler{
+    height: 100%;
+    width: 100%;
+    max-width: 2rem;
+    fill: var(--color-text);
+}

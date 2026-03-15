@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from "./header.module.scss";
-import LoginButton from "../client-components/loginButton/loginButton";
-import ThemeToggle from "../client-components/themeToggle/themeToggle";
+import LoginButton from "../../client-components/loginButton/loginButton";
+import ThemeToggle from "../../client-components/themeToggle/themeToggle";
 import { ReactElement } from "react";
 
 export default async function Header(): Promise<ReactElement<unknown, string>> {
@@ -23,6 +23,11 @@ export default async function Header(): Promise<ReactElement<unknown, string>> {
           <li>
             <Link href="/search" className={styles.link}>
               Search
+            </Link>
+          </li> 
+          <li>
+            <Link href="/playlist" className={styles.link}>
+              Playlist
             </Link>
           </li> 
         </ul>

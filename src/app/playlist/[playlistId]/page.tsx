@@ -1,27 +1,39 @@
-import { songProvider } from "../repositories/repositoryIndex";
+import { songProvider } from "@/repositories/repositoryIndex";
 import { auth } from "@/auth";
-import { Song } from "../spotyfi-utils/mock-song";
-import { SongCard } from "../components/features/songs/song-card/songCard";
-import { albumProvider } from "../repositories/repositoryIndex";
-import { Album } from "../spotyfi-utils/mock-album";
+import { Song } from "@/spotyfi-utils/mock-song";
+import { SongCard } from "@/components/features/songs/song-card/songCard";
+import { albumProvider } from "@/repositories/repositoryIndex";
+import { Album } from "@/spotyfi-utils/mock-album";
 import Image from "next/image";
 import styles from "./page.module.scss";
-import SearchBar from "../components/shared/search-bar/searchBar";
-import { playlistProvider } from "../repositories/repositoryIndex";
+import SearchBar from "@/components/shared/search-bar/searchBar";
+import { playlistProvider } from "@/repositories/repositoryIndex";
+import RemoveSongButton from "@/components/features/songs/remove-song-button/removeSongButton";
 
-export default async function Spotify() {
+type PlaylistProps = {
+  params: {
+    playlistId: string;
+  };
+};
+
+export default async function Playlist({ params }: PlaylistProps) {
   const session = await auth();
   const user = session?.user;
   const email = user?.email ? user.email : null;
-  console.log("User email:", email);
-  const playlist = email ? (await playlistProvider.getAll(email))?.[0] : null;
+  const playlistId = (await params).playlistId;
+  console.log("Playlist ID:", playlistId);
 
-
-  // const playlists : Playlist[] | null = user?.email ? (await playlistProvider.getAll(user.email)) : null
-  // const playlist : Playlist | null =  playlists?.length ? playlists[0] : null;
-  const songs: Song[] | null = playlist?.songs ? (await songProvider.getMany(playlist.songs)) : null;
+  const playlist = email
+    ? await playlistProvider.getList(playlistId, email)
+    : null;
+  console.log("Playlist songs:", playlist?.songs);
+  const songs: Song[] | null = playlist?.songs
+    ? await songProvider.getMany(playlist.songs)
+    : null;
   const albumId: string | null = songs ? songs[0]?.album?.id : null;
-  const album: Album | null = albumId ? (await albumProvider.getOne(albumId)) : null;
+  const album: Album | null = albumId
+    ? await albumProvider.getOne(albumId)
+    : null;
 
   return (
     <>
@@ -50,6 +62,10 @@ export default async function Spotify() {
               <li key={index} className={styles.listItem}>
                 <p>{index + 1}</p>
                 <SongCard song={song} />
+                <RemoveSongButton
+                  playlistId={playlistId}
+                  songId={song.id}
+                />
               </li>
             ))}
         </ol>

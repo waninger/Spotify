@@ -1,7 +1,8 @@
 import { Song } from "../spotyfi-utils/mock-song";
 import { Artist } from "../spotyfi-utils/mock-artist";
 import { Album } from "../spotyfi-utils/mock-album";
-import { Playlist } from "../types/playList";
+import { Playlist } from "../types/playlist";
+
 export interface SongService {
   getOne: (id: string) => Promise<Song | null>;
   getMany: (ids: string[]) => Promise<Song[] | null>;
@@ -17,8 +18,12 @@ export interface AlbumService {
   getMany: (ids: string[]) => Promise<Album[] | null>;
 }
 export interface PlaylistService {
-  getList: (listId: string) => Promise<Playlist | null>;
-  getAll: (userId:string) => Promise<Playlist[] | null>;
+  getList: (id: string, email: string) => Promise<Playlist | null>;
+  getAll: (userId: string) => Promise<Playlist[] | null>;
+  createPlaylist: (userId: string, name: string) => Promise<Playlist>;
+  addSongToPlaylist: (listId: string, songId: string) => Promise<void>;
+  removeSongFromPlaylist: (listId: string, songId: string) => Promise<void>;
+  removePlaylist: (listId: string) => Promise<void>;
 }
 export type SearchType = "track" | "artist" | "album" | "playlist";
 export type SearchResult = {

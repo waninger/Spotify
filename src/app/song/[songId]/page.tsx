@@ -1,7 +1,7 @@
 import styles from "./page.module.scss";
 import { songProvider } from "../../../repositories/repositoryIndex";
 import { Song } from "../../../spotyfi-utils/mock-song";
-import { SongCard } from "@/components/song-card/songCard";
+import { SongCard } from "@/components/features/songs/song-card/songCard";
 
 type SongPageProps = {
   params: {

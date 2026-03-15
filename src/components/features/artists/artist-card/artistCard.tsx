@@ -1,4 +1,4 @@
-import { Artist } from "../../spotyfi-utils/mock-artist";
+import { Artist } from "../../../../spotyfi-utils/mock-artist";
 import styles from "./artistCard.module.scss";
 import Link from "next/link";
 

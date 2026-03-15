@@ -1,0 +1,172 @@
+/* ============================================================
+   Link — component-scoped tokens
+   Follows the same two-layer token pattern as Button so the
+   two are visually interchangeable when needed.
+   ============================================================ */
+
+.link {
+  /* --- Component tokens --- */
+  --link-color:         var(--color-accent);
+  --link-color-hover:   var(--color-accent-hover);
+  --link-color-active:  var(--color-accent-active);
+  --link-font-size:     inherit;
+  --link-font-weight:   inherit;
+  --link-gap:           var(--space-1);
+
+  display:        inline-flex;
+  align-items:    center;
+  gap:            var(--link-gap);
+  color:          var(--link-color);
+  font-size:      var(--link-font-size);
+  font-weight:    var(--link-font-weight);
+  font-family:    var(--font-sans);
+  text-decoration: none;
+  cursor:         pointer;
+
+  transition:
+    color           var(--duration-fast) var(--easing-standard),
+    opacity         var(--duration-fast) var(--easing-standard);
+
+  &:hover {
+    color: var(--link-color-hover);
+  }
+
+  &:active {
+    color: var(--link-color-active);
+  }
+
+  &:focus-visible {
+    outline:      none;
+    border-radius: var(--radius-sm);
+    box-shadow:   var(--focus-ring);
+  }
+}
+
+/* ============================================================
+   Underline variants
+   ============================================================ */
+
+.underline-always {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.underline-hover {
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+.underline-none {
+  text-decoration: none;
+}
+
+/* ============================================================
+   Variants — visual treatment
+   ============================================================ */
+
+/* default: accent colored, no bg */
+
+.variant-subtle {
+  --link-color:        var(--color-text-muted);
+  --link-color-hover:  var(--color-text);
+  --link-color-active: var(--color-text);
+}
+
+.variant-plain {
+  --link-color:        var(--color-text);
+  --link-color-hover:  var(--color-accent);
+  --link-color-active: var(--color-accent-hover);
+}
+
+/* Looks exactly like a Button, useful for nav CTAs */
+.variant-button {
+  --btn-bg:          var(--color-accent);
+  --btn-bg-hover:    var(--color-accent-hover);
+  --btn-bg-active:   var(--color-accent-active);
+  --btn-text:        #ffffff;
+  --btn-border:      transparent;
+  --btn-radius:      var(--radius-md);
+  --btn-height:      var(--size-md);
+  --btn-padding:     0 var(--space-4);
+  --btn-font-size:   var(--text-sm);
+
+  display:           inline-flex;
+  align-items:       center;
+  justify-content:   center;
+  height:            var(--btn-height);
+  padding:           var(--btn-padding);
+  background:        var(--btn-bg);
+  color:             var(--btn-text) !important; /* override --link-color */
+  border:            1px solid var(--btn-border);
+  border-radius:     var(--btn-radius);
+  font-size:         var(--btn-font-size);
+  font-weight:       500;
+  text-decoration:   none !important;
+
+  &:hover {
+    background: var(--btn-bg-hover);
+    color:      var(--btn-text) !important;
+  }
+
+  &:active {
+    background: var(--btn-bg-active);
+  }
+}
+
+/* ============================================================
+   Sizes (only meaningful when variant="button")
+   ============================================================ */
+
+.size-sm {
+  --btn-height:    var(--size-sm);
+  --btn-padding:   0 var(--space-3);
+  --btn-font-size: var(--text-xs);
+  --link-font-size: var(--text-xs);
+}
+
+.size-md {
+  /* defaults */
+}
+
+.size-lg {
+  --btn-height:    var(--size-lg);
+  --btn-padding:   0 var(--space-5);
+  --btn-font-size: var(--text-md);
+  --link-font-size: var(--text-md);
+}
+
+/* ============================================================
+   Intents
+   ============================================================ */
+
+.intent-danger {
+  --link-color:        var(--color-error);
+  --link-color-hover:  color-mix(in oklab, var(--color-error) 80%, black);
+  --link-color-active: color-mix(in oklab, var(--color-error) 65%, black);
+  --color-accent:        var(--color-error);
+  --color-accent-hover:  color-mix(in oklab, var(--color-error) 80%, black);
+  --color-accent-active: color-mix(in oklab, var(--color-error) 65%, black);
+}
+
+.intent-success {
+  --link-color:        var(--color-success);
+  --link-color-hover:  color-mix(in oklab, var(--color-success) 80%, black);
+  --link-color-active: color-mix(in oklab, var(--color-success) 65%, black);
+  --color-accent:        var(--color-success);
+  --color-accent-hover:  color-mix(in oklab, var(--color-success) 80%, black);
+  --color-accent-active: color-mix(in oklab, var(--color-success) 65%, black);
+}
+
+/* ============================================================
+   External link icon
+   ============================================================ */
+
+.externalIcon {
+  display:     inline-block;
+  width:       0.75em;
+  height:      0.75em;
+  flex-shrink: 0;
+  opacity:     0.7;
+}

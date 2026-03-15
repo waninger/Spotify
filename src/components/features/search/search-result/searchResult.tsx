@@ -1,8 +1,8 @@
-import { SearchResultAlbum, SearchResultArtist, SearchResultSong } from "../../repositories/interfaces";
-import { convertSearchResultSongToSong, convertSearchResultAlbumToAlbum, convertSearchResultArtistToArtist } from "../../utils/convertSearchResult";
-import { SongCard } from "../song-card/songCard";
-import { AlbumCard } from "../album-card/albumCard";
-import { ArtistCard } from "../artist-card/artistCard";
+import { SearchResultAlbum, SearchResultArtist, SearchResultSong } from "../../../../repositories/interfaces";
+import { convertSearchResultSongToSong, convertSearchResultAlbumToAlbum, convertSearchResultArtistToArtist } from "../../../../utils/convertSearchResult";
+import { SongCard } from "../../songs/song-card/songCard";
+import { AlbumCard } from "../../albums/album-card/albumCard";
+import { ArtistCard } from "../../artists/artist-card/artistCard";
 type SearchResultProps = {
   result: (SearchResultSong | SearchResultArtist | SearchResultAlbum);
 };

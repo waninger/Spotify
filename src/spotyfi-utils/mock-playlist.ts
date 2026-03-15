@@ -1,4 +1,4 @@
-import { Playlist } from "../types/playList";
+import { Playlist } from "../types/playlist";
 
 export const playlist: Playlist = {
   id: "1",

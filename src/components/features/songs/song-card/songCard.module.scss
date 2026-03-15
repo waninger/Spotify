@@ -5,15 +5,17 @@
     align-items: center;
     width: 100%;
     padding: .5rem;
-    }
+}
 
 .name{
+    display: block;
     color:var(--color-text);
     font-size:large;
     font-weight:bold;
 }
 
 .artist{
+    display: block;
     color:var(--color-text);
     font-size:14px;
 }
