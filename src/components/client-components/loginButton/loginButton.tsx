@@ -12,35 +12,36 @@ type Props = {
 };
 
 export default function LoginButton({ variant = "inline" }: Props) {
-  const { data: session } = useSession();
-  const isAuthed = !!session;
+  const { data: session, status } = useSession();
+  const isLoading = status === "loading";
+  const isAuthed = status === "authenticated";
 
-  const email = session?.user?.email ?? "email not found";
+  const email = session?.user?.email ?? "Not signed in";
   const statusText = isAuthed ? `${email}` : "Not signed in";
-  const buttonText = isAuthed ? "Sign out" : "Sign in";
+  const buttonText = isLoading ? "Loading..." : isAuthed ? "Sign out" : "Sign in";
   const onClick = isAuthed ? () => signOut() : () => signIn();
 
-  const containerByVarient: Record<Variant, string> = {
+  const containerByVariant: Record<Variant, string> = {
     inline: `${styles.root} ${styles.inline}`,
     card: `${styles.root} ${styles.card}`,
   };
-  const buttonByVarient: Record<Variant, string> = {
+  const buttonByVariant: Record<Variant, string> = {
     inline: `${styles.button} ${styles.ghost}`,
     card: `${styles.button} ${styles.primary}`,
   };
-  const statusByVarient: Record<Variant, string> = {
+  const statusByVariant: Record<Variant, string> = {
     inline: `${styles.statusInline}`,
     card: `${styles.statusCard}`,
   };
 
-  const containerClass = containerByVarient[variant as Variant];
-  const buttonClass = buttonByVarient[variant as Variant];
-  const statusClass = statusByVarient[variant as Variant];
+  const containerClass = containerByVariant[variant as Variant];
+  const buttonClass = buttonByVariant[variant as Variant];
+  const statusClass = statusByVariant[variant as Variant];
 
   return (
     <div className={containerClass}>
-      <p className={statusClass}>{statusText}</p>
-      <button className={buttonClass} onClick={onClick}>
+      <p className={statusClass} title={statusText}>{statusText}</p>
+      <button className={buttonClass} onClick={onClick} disabled={isLoading} type="button">
         {buttonText}
       </button>
     </div>

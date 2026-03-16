@@ -23,10 +23,14 @@ export default function SearchBar() {
         handleSearchSubmit(searchTerm);
       }} className={styles.searchForm}>
         <input
-          type="text"
+          type="search"
+          name="query"
           placeholder="Search for songs, artists, albums..."
           value={searchTerm}
           onChange={handleSearchChange}
+          autoComplete="off"
+          enterKeyHint="search"
+          aria-label="Search songs, artists, and albums"
           className={styles.searchInput}
         />
         <button type="submit" className={styles.searchButton}>Search</button>

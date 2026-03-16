@@ -1,22 +1,52 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Theme, THEMES } from "../../../types/theme";
 import styles from "./themeToggle.module.scss";
 
 type Props = {
-  theme?:Theme
+  theme?: Theme;
+};
+
+function resolveSystemTheme() {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 }
 
-export default function ThemeToggleClient({theme:initialTheme = 'system' as Theme }:Props) {
+function applyTheme(theme: Theme) {
+  if (theme === "system") {
+    const resolved = resolveSystemTheme();
+    document.documentElement.setAttribute("data-theme", resolved);
+    return;
+  }
+  document.documentElement.setAttribute("data-theme", theme);
+}
 
+export default function ThemeToggleClient({
+  theme: initialTheme = "system" as Theme,
+}: Props) {
   const [theme, setTheme] = useState<Theme>(initialTheme);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const updateThem = async (newTheme: Theme) => {
+  useEffect(() => {
+    applyTheme(theme);
+
+    if (theme !== "system") return;
+
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = () => applyTheme("system");
+
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, [theme]);
+
+  const updateTheme = async (newTheme: Theme) => {
     const prevTheme = theme;
 
     setTheme(newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
+    applyTheme(newTheme);
+    setIsSaving(true);
 
     try {
       const res = await fetch("/api/theme", {
@@ -27,28 +57,33 @@ export default function ThemeToggleClient({theme:initialTheme = 'system' as Them
 
       if (!res.ok) {
         setTheme(prevTheme);
-        document.documentElement.setAttribute("data-theme", prevTheme);
+        applyTheme(prevTheme);
         console.error("Theme update failed:", await res.text());
       }
     } catch (error) {
       setTheme(prevTheme);
-      document.documentElement.setAttribute("data-theme", prevTheme);
+      applyTheme(prevTheme);
       console.error("Failed to update theme:", error);
+    } finally {
+      setIsSaving(false);
     }
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    updateThem(value as Theme);
+    updateTheme(value as Theme);
   };
 
   return (
-    <div className={styles.themeToggle}>
-      <label htmlFor="theme">Theme:</label>
+    <div className={styles.container}>
+      <label htmlFor="theme" className={styles.label}>Theme</label>
       <select
         id="theme"
         className={styles.select}
         value={theme}
         onChange={handleChange}
+        disabled={isSaving}
+        aria-label="Select theme"
       >
         {THEMES.map((t) => (
           <option key={t} value={t}>

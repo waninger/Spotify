@@ -177,7 +177,7 @@ export const spotyfiMockAlbumService: AlbumService = {
   },
   async getMany(ids: string[]): Promise<Album[] | null> {
     console.log(ids);
-    throw new Error("Function not implemented.");
+    return [album, album, album];
   },
 };
 

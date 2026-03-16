@@ -1,59 +1,103 @@
-import { songProvider } from "../repositories/repositoryIndex";
 import { auth } from "@/auth";
+import { Playlist } from "../types/playlist";
 import { Song } from "../spotyfi-utils/mock-song";
-import { SongCard } from "../components/features/songs/song-card/songCard";
-import { albumProvider } from "../repositories/repositoryIndex";
 import { Album } from "../spotyfi-utils/mock-album";
-import Image from "next/image";
-import styles from "./page.module.scss";
+import { PlaylistCard } from "../components/features/playlists/playlist-card/playlistCard";
+import { playlistProvider, songProvider, albumProvider } from "../repositories/repositoryIndex";
 import SearchBar from "../components/shared/search-bar/searchBar";
-import { playlistProvider } from "../repositories/repositoryIndex";
+import { Link } from "../components/ui/Link/link";
+import styles from "./page.module.scss";
 
 export default async function Spotify() {
   const session = await auth();
   const user = session?.user;
-  const email = user?.email ? user.email : null;
-  console.log("User email:", email);
-  const playlist = email ? (await playlistProvider.getAll(email))?.[0] : null;
+  const email = user?.email ?? null;
 
+  /* ── Unauthenticated ───────────────────────────────────────── */
+  if (!email) {
+    return (
+      <div className={styles.hero}>
+        <div className={styles.heroContent}>
+          <h1 className={styles.heroTitle}>Your music, your way.</h1>
+          <p className={styles.heroSubtitle}>
+            Search millions of songs, build playlists, and listen to previews —
+            all in one place.
+          </p>
+          <div className={styles.heroActions}>
+            <Link href="/api/auth/signin" variant="button" size="lg">
+              Sign in to get started
+            </Link>
+          </div>
+        </div>
+        <div className={styles.heroSearch}>
+          <SearchBar />
+        </div>
+      </div>
+    );
+  }
 
-  // const playlists : Playlist[] | null = user?.email ? (await playlistProvider.getAll(user.email)) : null
-  // const playlist : Playlist | null =  playlists?.length ? playlists[0] : null;
-  const songs: Song[] | null = playlist?.songs ? (await songProvider.getMany(playlist.songs)) : null;
-  const albumId: string | null = songs ? songs[0]?.album?.id : null;
-  const album: Album | null = albumId ? (await albumProvider.getOne(albumId)) : null;
+  /* ── Authenticated ─────────────────────────────────────────── */
+  const playlists: Playlist[] | null = await playlistProvider.getAll(email);
+
+  /* Fetch cover art: batch songs then batch albums — max 2 API calls */
+  let coverMap = new Map<string, string | null>();
+  if (playlists && playlists.length > 0) {
+    const firstSongIds = [
+      ...new Set(playlists.filter((p) => p.songs.length > 0).map((p) => p.songs[0])),
+    ];
+    const songs: Song[] | null =
+      firstSongIds.length > 0 ? await songProvider.getMany(firstSongIds) : null;
+
+    if (songs) {
+      const albumIds = [...new Set(songs.map((s) => s.album.id))];
+      const albums: Album[] | null =
+        albumIds.length > 0 ? await albumProvider.getMany(albumIds) : null;
+
+      const albumById = new Map(albums?.map((a) => [a.id, a]) ?? []);
+      const songById = new Map(songs.map((s) => [s.id, s]));
+
+      coverMap = new Map(
+        playlists.map((p) => {
+          const song = songById.get(p.songs[0]);
+          const album = song ? albumById.get(song.album.id) : null;
+          return [p.id, album?.images?.[0]?.url ?? null];
+        }),
+      );
+    }
+  }
 
   return (
-    <>
-      <div className={styles.container}>
-        <SearchBar />
-        {album && (
-          <>
-            <div className={styles.imageWrapper}>
-              <Image
-                src={album.images[0].url}
-                alt={album.name}
-                fill={true}
-                sizes="(max-width: 768px) 90vw, 320px"
-                priority
+    <div className={styles.container}>
+      <SearchBar />
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <h2 className={styles.sectionTitle}>Your playlists</h2>
+          <Link href="/playlist" variant="subtle" size="sm" underline="hover">
+            See all
+          </Link>
+        </div>
+
+        {playlists && playlists.length > 0 ? (
+          <div className={styles.playlistGrid}>
+            {playlists.map((playlist) => (
+              <PlaylistCard
+                key={playlist.id}
+                playlist={playlist}
+                coverUrl={coverMap.get(playlist.id)}
+                variant="wide"
               />
-            </div>
-            <div className={styles.heading}>
-              <div className={styles.albumName}>{album.name}</div>
-              <div className={styles.albumArtist}>{album.artists[0].name}</div>
-            </div>
-          </>
-        )}
-        <ol className={styles.songList}>
-          {songs &&
-            songs.map((song, index) => (
-              <li key={index} className={styles.listItem}>
-                <p>{index + 1}</p>
-                <SongCard song={song} />
-              </li>
             ))}
-        </ol>
-      </div>
-    </>
+          </div>
+        ) : (
+          <div className={styles.empty}>
+            <p className={styles.emptyText}>You have no playlists yet.</p>
+            <Link href="/playlist" variant="button" size="sm">
+              Create your first playlist
+            </Link>
+          </div>
+        )}
+      </section>
+    </div>
   );
 }

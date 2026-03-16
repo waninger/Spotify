@@ -1,58 +1,112 @@
 .root {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-sans);
-    color: var(--color-text);
-  }
-  
-  /* Variants */
-  .inline { display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-sans);
-    color: var(--color-text); 
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  color: var(--color-text);
 }
-  .card {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1rem;
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
+
+/* Variants */
+.inline {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  gap: var(--space-2);
+}
+
+.card {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-card-background);
+  max-width: 18rem;
+}
+
+/* Status text */
+.statusInline {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: min(24ch, 22vw);
+}
+
+.statusCard {
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+/* Button base */
+.button {
+  height: var(--size-sm);
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  font-family: inherit;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background var(--duration-fast) var(--easing-standard),
+    border-color var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard),
+    opacity var(--duration-fast) var(--easing-standard);
+}
+
+/* Button visual variants */
+.primary {
+  background: var(--color-accent);
+  color: #ffffff;
+  border: 1px solid var(--color-accent);
+
+  &:hover,
+  &:focus-visible {
+    background: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+    outline: none;
+  }
+}
+
+.ghost {
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+
+  &:hover,
+  &:focus-visible {
     background: var(--color-muted);
-    max-width: 260px;
+    border-color: var(--color-accent);
+    outline: none;
   }
-  
-  /* Status text per-variant (optional fine-tuning) */
-  .statusInline { font-size: 0.9rem; opacity: 0.85; }
-  .statusCard   { font-size: 0.9rem; font-weight: 500; }
-  
-  /* Button base */
+}
+
+.button:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
+.button:disabled {
+  opacity: 0.65;
+  cursor: progress;
+}
+
+@media (max-width: 640px) {
+  .statusInline {
+    display: none;
+  }
+
   .button {
-    padding: 0.45rem 0.9rem;
-    font-size: 0.9rem;
-    font-family: inherit;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.15s, border-color 0.15s, opacity 0.15s;
+    height: 30px;
+    padding: 0 var(--space-2);
+    font-size: var(--text-xs);
   }
-  
-  /* Button visual variants */
-  .primary {
-    background: var(--color-accent);
-    color: #fff;
-    border: 1px solid var(--color-accent);
-    &:hover, &:focus-visible { background: #0055cc; border-color: #0055cc; outline: none; }
+
+  .card {
+    width: 100%;
+    max-width: none;
   }
-  
-  .ghost {
-    background: var(--color-bg);
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
-    &:hover, &:focus-visible { background: var(--color-muted); border-color: var(--color-accent); outline: none; }
-  }
-  
-  .button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }  
+}

@@ -8,12 +8,14 @@ export default async function Header(): Promise<ReactElement<unknown, string>> {
 
   return (
     <header className={styles.header}>
-      <input type="checkbox" className={styles.navToggle} id="burger" />
-      <label className={styles.menueBurger} htmlFor="burger">
+      <a href="#site-nav" className={styles.menuBurger} aria-label="Open menu">
         ☰
-      </label>
+      </a>
 
-      <nav className={styles.nav}>
+      <nav id="site-nav" className={styles.nav} aria-label="Primary navigation">
+        <a href="#" className={styles.closeNav} aria-label="Close menu">
+          ×
+        </a>
         <ul className={styles.navList}>
           <li>
             <Link href="/" className={styles.link}>
@@ -32,6 +34,9 @@ export default async function Header(): Promise<ReactElement<unknown, string>> {
           </li> 
         </ul>
       </nav>
+
+      <a href="#" className={styles.backdrop} aria-hidden="true" />
+
       <div className={styles.utils}>
         <ThemeToggle />
         <LoginButton />

@@ -1,21 +1,196 @@
-.container{
-    background:transparent;
-    display:flex;
-    flex-direction:row;
-    align-items: center;
-    width: 100%;
-    padding: .5rem;
+/* ============================================================
+   PlaylistCard — shared base
+   ============================================================ */
+
+.card {
+  display: flex !important;
+  width: 100%;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-card-background);
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    box-shadow      var(--duration-fast) var(--easing-standard),
+    border-color    var(--duration-fast) var(--easing-standard),
+    transform       var(--duration-fast) var(--easing-standard),
+    background      var(--duration-fast) var(--easing-standard);
+
+  &:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-md);
+
+    .art {
+      background: color-mix(in oklab, var(--color-accent) 30%, var(--color-muted));
+    }
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
 }
 
-.name{
-    color:var(--color-text);
-    font-size:large;
-    font-weight:bold;
+/* ============================================================
+   Variants
+   ============================================================ */
+
+/* grid — tall tile, art on top */
+.variant-grid {
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
 }
 
-.filler{
-    height: 100%;
-    width: 100%;
-    max-width: 2rem;
-    fill: var(--color-text);
+/* list — horizontal row */
+.variant-list {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+
+  &:hover {
+    background: color-mix(in oklab, var(--color-text) 5%, transparent);
+    border-color: var(--color-border);
+    box-shadow: none;
+  }
+}
+
+/* compact — row, no art */
+.variant-compact {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border-color: transparent;
+
+  &:hover {
+    background: color-mix(in oklab, var(--color-text) 5%, transparent);
+    border-color: transparent;
+    box-shadow: none;
+  }
+}
+
+/* ============================================================
+   Art block
+   ============================================================ */
+
+.art {
+  container-type: inline-size;
+  position: relative; /* required for Next.js Image fill */
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: color-mix(in oklab, var(--color-accent) 18%, var(--color-muted));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--duration-normal) var(--easing-standard);
+}
+
+/* Next.js Image fills the art block */
+.artImage {
+  object-fit: cover;
+}
+
+/* Small fixed-size art for list/wide variants */
+.artSm {
+  width: 44px;
+  height: 44px;
+  aspect-ratio: unset;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+/* Letter scales proportionally to the art block width */
+.artLetter {
+  font-size: 28cqi;
+  font-weight: 800;
+  color: var(--color-accent);
+  user-select: none;
+  line-height: 1;
+}
+
+/* Letter fallback for small art — cqi would be ~12px at 44px wide */
+.artLetterSm {
+  font-size: 1.25rem;
+}
+
+/* ============================================================
+   Info
+   ============================================================ */
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+  padding: var(--space-3);
+
+  /* variants that manage their own padding */
+  .variant-list &,
+  .variant-wide &,
+  .variant-compact & {
+    padding: 0;
+  }
+}
+
+.name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.count {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+/* Chevron arrow for list/compact */
+.chevron {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  line-height: 1;
+  transition: color var(--duration-fast) var(--easing-standard),
+              transform var(--duration-fast) var(--easing-standard);
+
+  .card:hover & {
+    color: var(--color-accent);
+    transform: translateX(2px);
+  }
+}
+
+/* ============================================================
+   Create playlist card
+   ============================================================ */
+
+.createCard {
+  border-style: dashed;
+  background: transparent;
+
+  &:hover {
+    background: color-mix(in oklab, var(--color-accent) 5%, transparent);
+  }
+}
+
+.createArt {
+  background: color-mix(in oklab, var(--color-accent) 8%, var(--color-muted));
+}
+
+.createIcon {
+  font-size: 28cqi;
+  font-weight: 300;
+  color: var(--color-text-muted);
+  line-height: 1;
+  user-select: none;
 }

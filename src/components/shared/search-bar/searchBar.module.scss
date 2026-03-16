@@ -1,33 +1,81 @@
 .container {
-  width: 90%;
-  margin-bottom: 20px;
-}
-.searchInput {
-  width: 100%;
-  padding: 10px;
-  font-size: large;
-  border: 1px solid var(--color-text);
-  border-radius: 4px;
-  background: transparent;
-  color: var(--color-text);
+  width: min(100%, 56rem);
+  margin: 0 auto var(--space-5);
 }
 
-.searchForm{
-    display: flex;
-    width: 100%;    
+.searchForm {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.searchInput {
+  width: 100%;
+  min-width: 0;
+  height: var(--size-md);
+  padding: 0 var(--space-3);
+  font-size: clamp(var(--text-sm), 2.2vw, var(--text-md));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition:
+    border-color var(--duration-fast) var(--easing-standard),
+    box-shadow var(--duration-fast) var(--easing-standard);
+
+  &::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: var(--focus-ring);
+  }
 }
 
 .searchButton {
-  padding: 10px 20px;
-  margin-left: 10px;
-  font-size: large;
-  border: none;
-  border-radius: 4px;
-  background: transparent;
-  border: var(--color-text) 1px solid;
-  color: var(--color-button-text);
+  flex-shrink: 0;
+  height: var(--size-md);
+  padding: 0 var(--space-4);
+  font-size: clamp(var(--text-sm), 2vw, var(--text-md));
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-card-background);
+  color: var(--color-text);
   cursor: pointer;
-}   
-.searchButton:hover {
-  background: var(--color-text-muted);
+  transition:
+    background var(--duration-fast) var(--easing-standard),
+    border-color var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard);
+
+  &:hover {
+    background: color-mix(in oklab, var(--color-accent) 12%, var(--color-card-background));
+    border-color: var(--color-accent);
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    width: 100%;
+    margin-bottom: var(--space-4);
+  }
+
+  .searchForm {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+
+  .searchInput,
+  .searchButton {
+    width: 100%;
+    height: var(--size-lg);
+  }
 }

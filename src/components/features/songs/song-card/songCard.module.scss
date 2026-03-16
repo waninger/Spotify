@@ -1,33 +1,142 @@
-.container{
-    background:transparent;
-    display:flex;
-    flex-direction:row;
-    align-items: center;
-    width: 100%;
-    padding: .5rem;
+/* ============================================================
+   SongCard — base
+   ============================================================ */
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: transparent;
+  transition: background var(--duration-fast) var(--easing-standard);
+
+  &:hover {
+    background: color-mix(in oklab, var(--color-text) 5%, transparent);
+  }
 }
 
-.name{
-    display: block;
-    color:var(--color-text);
-    font-size:large;
-    font-weight:bold;
+/* --- Info block --- */
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0; /* allow text truncation */
 }
 
-.artist{
-    display: block;
-    color:var(--color-text);
-    font-size:14px;
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
-.time{
-    color:var(--color-text);
-    font-size:large;
-    margin-left: auto;
+.name {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.filler{
-    height: 100%;
-    width: 100%;
-    max-width: 2rem;
-    fill: var(--color-text);
+
+.subRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.artist {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.album {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.separator {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  user-select: none;
+}
+
+/* --- Trailing block --- */
+.trailing {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.time {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 3ch;
+  text-align: right;
+}
+
+.spotifyLink {
+  font-size: var(--text-xs);
+}
+
+/* --- Explicit badge --- */
+.explicit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-sm);
+  background: var(--color-text-muted);
+  color: var(--color-bg);
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* --- Leading filler (when no audio) --- */
+.filler {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+}
+
+/* --- Track number (compact variant) --- */
+.trackNumber {
+  flex-shrink: 0;
+  width: 2rem;
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Variants
+   ============================================================ */
+
+/* compact — tighter, no audio player */
+.variant-compact {
+  padding: var(--space-1) var(--space-2);
+
+  .name { font-size: var(--text-sm); }
+  .time { font-size: var(--text-xs); }
+}
+
+/* detail — slightly more breathing room */
+.variant-detail {
+  padding: var(--space-3) var(--space-4);
+
+  .name { font-size: var(--text-lg); }
+}
+
+/* search — same as default, album visible (handled in JSX) */
+.variant-search {
+  padding: var(--space-2) var(--space-3);
 }
