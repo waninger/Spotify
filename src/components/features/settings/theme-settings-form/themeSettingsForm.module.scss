@@ -1,0 +1,163 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-card-background);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.title {
+  color: var(--color-text);
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.description {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.label {
+  min-width: 8.5rem;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.select,
+.text {
+  height: var(--size-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-text);
+  padding: 0 var(--space-2);
+}
+
+.select:focus-visible,
+.text:focus-visible,
+.range:focus-visible,
+.color:focus-visible,
+.primaryButton:focus-visible,
+.secondaryButton:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.range {
+  width: min(100%, 20rem);
+}
+
+.value {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  min-width: 3.5rem;
+}
+
+.tokenGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.tokenRow {
+  display: grid;
+  grid-template-columns: 1fr auto 7rem;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.color {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  padding: 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.primaryButton,
+.secondaryButton {
+  height: var(--size-sm);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+}
+
+.primaryButton {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+.primaryButton:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+.secondaryButton {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.secondaryButton:hover:not(:disabled) {
+  border-color: var(--color-accent);
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled {
+  opacity: 0.65;
+  cursor: progress;
+}
+
+.status {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 900px) {
+  .tokenGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .tokenRow {
+    grid-template-columns: 1fr auto;
+  }
+
+  .tokenRow .text {
+    grid-column: 1 / -1;
+  }
+
+  .actions {
+    justify-content: stretch;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    flex: 1;
+  }
+}

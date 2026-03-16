@@ -31,7 +31,12 @@ export default async function Header(): Promise<ReactElement<unknown, string>> {
             <Link href="/playlist" className={styles.link}>
               Playlist
             </Link>
-          </li> 
+          </li>
+          <li>
+            <Link href="/settings" className={styles.link}>
+              Settings
+            </Link>
+          </li>
         </ul>
       </nav>
 

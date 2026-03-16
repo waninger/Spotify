@@ -98,3 +98,25 @@
   width: 100%;
   max-width: 32rem;
 }
+
+@media (max-width: 1024px) {
+  .heroLogged {
+    grid-template-columns: 1fr;
+    padding: var(--space-5);
+  }
+
+  .heroMainSubtitle {
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: var(--space-4) var(--space-3);
+    gap: var(--space-5);
+  }
+
+  .sectionHeader {
+    align-items: center;
+  }
+}

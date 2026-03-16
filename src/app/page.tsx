@@ -3,6 +3,7 @@ import { Playlist } from "../types/playlist";
 import { Song } from "../spotyfi-utils/mock-song";
 import { Album } from "../spotyfi-utils/mock-album";
 import { PlaylistCard } from "../components/features/playlists/playlist-card/playlistCard";
+import LoggedInHero from "../components/features/hero/logged-in-hero/loggedInHero";
 import { playlistProvider, songProvider, albumProvider } from "../repositories/repositoryIndex";
 import SearchBar from "../components/shared/search-bar/searchBar";
 import { Link } from "../components/ui/Link/link";
@@ -66,8 +67,23 @@ export default async function Spotify() {
     }
   }
 
+  const featuredPlaylists = (playlists ?? []).slice(0, 3);
+  const featuredPlaylistItems = featuredPlaylists.map((playlist) => ({
+    playlist,
+    coverUrl: coverMap.get(playlist.id) ?? null,
+  }));
+  const totalSongs = (playlists ?? []).reduce((sum, playlist) => sum + playlist.songs.length, 0);
+  const userName = user?.name?.split(" ")[0] ?? "there";
+
   return (
     <div className={styles.container}>
+      <LoggedInHero
+        userName={userName}
+        playlistCount={playlists?.length ?? 0}
+        totalSongs={totalSongs}
+        featuredPlaylists={featuredPlaylistItems}
+      />
+
       <SearchBar />
 
       <section className={styles.section}>

@@ -46,16 +46,26 @@
     --easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
 
     /* --- Font sizes --- */
-    --text-xs: 0.75rem;
-    --text-sm: 0.875rem;
-    --text-md: 1rem;
-    --text-lg: 1.125rem;
-    --text-xl: 1.25rem;
+    --scale-text: 1;
+    --text-xs-base: 0.75rem;
+    --text-sm-base: 0.875rem;
+    --text-md-base: 1rem;
+    --text-lg-base: 1.125rem;
+    --text-xl-base: 1.25rem;
+    --text-xs: calc(var(--text-xs-base) * var(--scale-text));
+    --text-sm: calc(var(--text-sm-base) * var(--scale-text));
+    --text-md: calc(var(--text-md-base) * var(--scale-text));
+    --text-lg: calc(var(--text-lg-base) * var(--scale-text));
+    --text-xl: calc(var(--text-xl-base) * var(--scale-text));
 
     /* --- Component size scale (height) --- */
-    --size-sm: 32px;
-    --size-md: 40px;
-    --size-lg: 48px;
+    --scale-ui: 1;
+    --size-sm-base: 32px;
+    --size-md-base: 40px;
+    --size-lg-base: 48px;
+    --size-sm: calc(var(--size-sm-base) * var(--scale-ui));
+    --size-md: calc(var(--size-md-base) * var(--scale-ui));
+    --size-lg: calc(var(--size-lg-base) * var(--scale-ui));
 
     /* --- Focus ring --- */
     --focus-ring: 0 0 0 3px color-mix(in oklab, var(--color-accent) 40%, transparent);
