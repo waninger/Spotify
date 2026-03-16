@@ -1,6 +1,6 @@
-import { Album } from "../spotyfi-utils/mock-album";
-import { Artist } from "../spotyfi-utils/mock-artist";
-import { Song } from "../spotyfi-utils/mock-song";
+import { Album } from "../mock-data/mock-album";
+import { Artist } from "../mock-data/mock-artist";
+import { Song } from "../mock-data/mock-song";
 import { SearchResultAlbum, SearchResultArtist, SearchResultSong } from "../repositories/interfaces";
 
 export function convertSearchResultAlbumToAlbum(searchAlbum: SearchResultAlbum): Album {

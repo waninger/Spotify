@@ -1,6 +1,6 @@
-import { Song, song } from "../spotyfi-utils/mock-song";
-import { Artist, artist } from "../spotyfi-utils/mock-artist";
-import { mockSearchResult } from "../spotyfi-utils/mock-search-result";
+import { Song, song } from "../mock-data/mock-song";
+import { Artist, artist } from "../mock-data/mock-artist";
+import { mockSearchResult } from "../mock-data/mock-search-result";
 import {
   SongService,
   AlbumService,
@@ -9,7 +9,7 @@ import {
   SearchResult,
   SearchType,
 } from "./interfaces";
-import { Album, album } from "../spotyfi-utils/mock-album";
+import { Album, album } from "../mock-data/mock-album";
 import { getSpotifyAccessToken } from "../repositories/accessToken";
 
 const SPOTIFY_API_BASE_URL = "https://api.spotify.com/v1";

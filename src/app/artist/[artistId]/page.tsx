@@ -1,6 +1,6 @@
 import styles from "./page.module.scss";
 import { artistProvider } from "../../../repositories/repositoryIndex";
-import { Artist } from "../../../spotyfi-utils/mock-artist";
+import { Artist } from "../../../mock-data/mock-artist";
 
 type ArtistPageProps = {
   artistId: string;

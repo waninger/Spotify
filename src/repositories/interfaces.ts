@@ -1,6 +1,6 @@
-import { Song } from "../spotyfi-utils/mock-song";
-import { Artist } from "../spotyfi-utils/mock-artist";
-import { Album } from "../spotyfi-utils/mock-album";
+import { Song } from "../mock-data/mock-song";
+import { Artist } from "../mock-data/mock-artist";
+import { Album } from "../mock-data/mock-album";
 import { Playlist } from "../types/playlist";
 
 export interface SongService {

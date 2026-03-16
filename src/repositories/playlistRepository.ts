@@ -1,5 +1,5 @@
 import { PlaylistService } from "./interfaces";
-import { playlist } from "../spotyfi-utils/mock-playlist";
+import { playlist } from "../mock-data/mock-playlist";
 import { Pool } from "pg";
 import { Playlist } from "../types/playlist";
 

@@ -1,9 +1,9 @@
 import { songProvider } from "@/repositories/repositoryIndex";
 import { auth } from "@/auth";
-import { Song } from "@/spotyfi-utils/mock-song";
+import { Song } from "@/mock-data/mock-song";
 import { SongCard } from "@/components/features/songs/song-card/songCard";
 import { albumProvider } from "@/repositories/repositoryIndex";
-import { Album } from "@/spotyfi-utils/mock-album";
+import { Album } from "@/mock-data/mock-album";
 import Image from "next/image";
 import styles from "./page.module.scss";
 import SearchBar from "@/components/shared/search-bar/searchBar";
