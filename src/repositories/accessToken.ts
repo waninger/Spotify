@@ -6,19 +6,37 @@ type TokenCache = {
 };
 const SAFETY_MARGIN = 60_000;
 
-let cache: TokenCache | null = null;
-let inFlight: Promise<string> | null = null;
+type TokenStore = {
+  cache: TokenCache | null;
+  inFlight: Promise<string> | null;
+};
 
-export async function getSpotifyAccessToken(): Promise<string> {
-  const now = Date.now();
+function getTokenStore(): TokenStore {
+  const globalStore = globalThis as typeof globalThis & {
+    __spotifyTokenStore?: TokenStore;
+  };
 
-  if (cache && now < cache.expiresAt - SAFETY_MARGIN) {
-    return cache.accessToken;
+  if (!globalStore.__spotifyTokenStore) {
+    globalStore.__spotifyTokenStore = {
+      cache: null,
+      inFlight: null,
+    };
   }
 
-  if (inFlight) return inFlight;
+  return globalStore.__spotifyTokenStore;
+}
 
-  inFlight = (async () => {
+export async function getSpotifyAccessToken(): Promise<string> {
+  const store = getTokenStore();
+  const now = Date.now();
+
+  if (store.cache && now < store.cache.expiresAt - SAFETY_MARGIN) {
+    return store.cache.accessToken;
+  }
+
+  if (store.inFlight) return store.inFlight;
+
+  store.inFlight = (async () => {
     const clientId = process.env.SPOTIFY_CLIENT_ID;
     const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
     if (!clientId || !clientSecret) {
@@ -44,17 +62,17 @@ export async function getSpotifyAccessToken(): Promise<string> {
 
     const json: { access_token: string; expires_in: number } = await res.json();
 
-    cache = {
+    store.cache = {
       accessToken: json.access_token,
       expiresAt: Date.now() + json.expires_in * 1000,
     };
 
-    return cache.accessToken;
+    return store.cache.accessToken;
   })();
 
   try {
-    return await inFlight;
+    return await store.inFlight;
   } finally {
-    inFlight = null;
+    store.inFlight = null;
   }
 }

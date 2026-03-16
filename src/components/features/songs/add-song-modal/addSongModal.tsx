@@ -1,7 +1,7 @@
 "use client";
 import { useState} from "react";
 import { useSession } from "next-auth/react";
-import { Playlist } from "../../../../types/playlist";
+import { Playlist } from "@/types/playlist";
 import styles from "./addSongModal.module.scss";
 
 interface AddSongModalProps {

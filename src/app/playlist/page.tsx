@@ -1,8 +1,8 @@
-import { PlaylistCard } from "../../components/features/playlists/playlist-card/playlistCard";
+import { PlaylistCard } from "@/components/features/playlists/playlist-card/playlistCard";
 import styles from "./page.module.scss";
-import { playlistProvider } from "../../repositories/repositoryIndex";
-import SearchBar from "../../components/shared/search-bar/searchBar";
-import CreatePlaylistModal from "../../components/client-components/create-playlist-modal/CreatePlaylistModal";
+import { playlistProvider } from "@/repositories/repositoryIndex";
+import SearchBar from "@/components/shared/search-bar/searchBar";
+import CreatePlaylistModal from "@/components/client-components/create-playlist-modal/CreatePlaylistModal";
 import { auth } from "@/auth";
 
 

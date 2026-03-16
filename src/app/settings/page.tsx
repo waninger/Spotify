@@ -1,6 +1,6 @@
-import ThemeSettingsForm from "../../components/features/settings/theme-settings-form/themeSettingsForm";
-import { getRequestContext } from "../../utils/requestContext";
-import { parseThemeSettingsCookie } from "../../utils/themeSettings";
+import ThemeSettingsForm from "@/components/features/settings/theme-settings-form/themeSettingsForm";
+import { getRequestContext } from "@/utils/requestContext";
+import { parseThemeSettingsCookie } from "@/utils/themeSettings";
 import styles from "./page.module.scss";
 
 export default async function SettingsPage() {

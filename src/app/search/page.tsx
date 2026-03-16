@@ -1,7 +1,7 @@
 import { musicSearchProvider } from "@/repositories/repositoryIndex";
 import { SearchResultAlbum, SearchResultArtist, SearchResultSong, SearchType } from "@/repositories/interfaces";
 import SearchResult from "@/components/features/search/search-result/searchResult";
-import SearchBar from "../../components/shared/search-bar/searchBar";
+import SearchBar from "@/components/shared/search-bar/searchBar";
 import styles from "./page.module.scss";
 
 

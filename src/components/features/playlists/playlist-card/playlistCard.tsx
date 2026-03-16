@@ -1,6 +1,6 @@
 import styles from "./playlistCard.module.scss";
-import { Link } from "../../../ui/Link/link";
-import { Playlist } from "../../../../types/playlist";
+import { Link } from "@/components/ui/Link/link";
+import { Playlist } from "@/types/playlist";
 import Image from "next/image";
 
 export type PlaylistCardVariant = "grid" | "list" | "compact" | "wide";

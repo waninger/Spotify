@@ -4,9 +4,9 @@ import {
   albumProvider,
   artistProvider,
   musicSearchProvider,
-} from "../repositories/repositoryIndex";
-import { getSpotifyAccessToken } from "../repositories/accessToken";
-import { SearchType } from "../repositories/interfaces";
+} from "@/repositories/repositoryIndex";
+import { getSpotifyAccessToken } from "@/repositories/accessToken";
+import { SearchType } from "@/repositories/interfaces";
 import { playlist } from "@/mock-data/mock-playlist";
 
 const SONG_ID = "3n3Ppam7vgaVa1iaRUc9Lp";

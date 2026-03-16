@@ -1,6 +1,6 @@
-import { Song, song } from "../mock-data/mock-song";
-import { Artist, artist } from "../mock-data/mock-artist";
-import { mockSearchResult } from "../mock-data/mock-search-result";
+import { Song, song } from "@/mock-data/mock-song";
+import { Artist, artist } from "@/mock-data/mock-artist";
+import { mockSearchResult } from "@/mock-data/mock-search-result";
 import {
   SongService,
   AlbumService,
@@ -8,11 +8,73 @@ import {
   SearchService,
   SearchResult,
   SearchType,
-} from "./interfaces";
-import { Album, album } from "../mock-data/mock-album";
-import { getSpotifyAccessToken } from "../repositories/accessToken";
+} from "@/repositories/interfaces";
+import { Album, album } from "@/mock-data/mock-album";
+import { getSpotifyAccessToken } from "@/repositories/accessToken";
 
 const SPOTIFY_API_BASE_URL = "https://api.spotify.com/v1";
+const SEARCH_REVALIDATE_SECONDS = 5 * 60;
+const ENTITY_REVALIDATE_SECONDS = 15 * 60;
+const TRACK_BATCH_SIZE = 50;
+const ARTIST_BATCH_SIZE = 50;
+const ALBUM_BATCH_SIZE = 20;
+
+function dedupeIds(ids: string[]): string[] {
+  return [...new Set(ids.filter(Boolean))];
+}
+
+function chunkIds(ids: string[], size: number): string[][] {
+  const chunks: string[][] = [];
+  for (let index = 0; index < ids.length; index += size) {
+    chunks.push(ids.slice(index, index + size));
+  }
+  return chunks;
+}
+
+async function fetchSpotifyJson<T>(
+  path: string,
+  revalidateSeconds: number,
+): Promise<T | null> {
+  let accessToken: string;
+
+  try {
+    accessToken = await getSpotifyAccessToken();
+  } catch (error) {
+    console.error("Error fetching Spotify access token:", error);
+    return null;
+  }
+
+  const response = await fetch(`${SPOTIFY_API_BASE_URL}${path}`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${accessToken}` },
+    next: { revalidate: revalidateSeconds },
+  });
+
+  if (!response.ok) {
+    console.error(`Spotify API error: ${response.status} ${response.statusText}`);
+    return null;
+  }
+
+  return (await response.json()) as T;
+}
+
+async function fetchSpotifyCollection<T>(
+  path: string,
+  field: string,
+  revalidateSeconds: number,
+): Promise<T[]> {
+  const data = await fetchSpotifyJson<Record<string, T[] | undefined>>(
+    path,
+    revalidateSeconds,
+  );
+  if (!data) return [];
+  return (data[field] ?? []).filter(Boolean) as T[];
+}
+
+function orderByRequestedIds<T extends { id: string }>(items: T[], ids: string[]): T[] {
+  const byId = new Map(items.map((item) => [item.id, item]));
+  return ids.map((id) => byId.get(id)).filter((item): item is T => item !== undefined);
+}
 
 export const spotifySearchService: SearchService = {
   async search(
@@ -20,128 +82,82 @@ export const spotifySearchService: SearchService = {
     type: SearchType,
     limit?: number,
   ): Promise<SearchResult | null> {
-    console.log(`Fetching search with: ${query} ${type} ${limit}`);
-    let accessToken: string;
-    try {
-      accessToken = await getSpotifyAccessToken();
-    } catch (error) {
-      console.error("Error fetching Spotify access token:", error);
-      return null;
-    }
+    const normalizedQuery = query.trim();
+    const normalizedLimit = limit || 20;
 
-    const url = `${SPOTIFY_API_BASE_URL}/search?q=${encodeURIComponent(query)}&type=${type}&limit=${limit || 20}`;
-    const response = await fetch(url, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    if (!response.ok) {
-      console.error(
-        `Spotify API error: ${response.status} ${response.statusText}`,
-      );
-      return null;
-    }
-    const data = await response.json();
-    console.log("Fetched search data:", data);
-    return data as SearchResult;
+    return fetchSpotifyJson<SearchResult>(
+      `/search?q=${encodeURIComponent(normalizedQuery)}&type=${type}&limit=${normalizedLimit}`,
+      SEARCH_REVALIDATE_SECONDS,
+    );
   },
 };
 
 export const spotifySongService: SongService = {
   async getOne(id: string): Promise<Song | null> {
-    console.log(`Fetching song with ID: ${id}`);
-    const accessToken = await getSpotifyAccessToken();
-    const url = `${SPOTIFY_API_BASE_URL}/tracks/${id}`;
-    const response = await fetch(url, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    if (!response.ok) {
-      console.error(
-        `Spotify API error: ${response.status} ${response.statusText}`,
-      );
-      return null;
-    }
-    const data = await response.json();
-    console.log("Fetched song data:", data);
-    return data as Song;
+    return fetchSpotifyJson<Song>(`/tracks/${id}`, ENTITY_REVALIDATE_SECONDS);
   },
   async getMany(ids: string[]): Promise<Song[]> {
-    const songs = await Promise.all(ids.map((id) => this.getOne(id)));
-    return songs.filter((song): song is Song => song !== null);
+    const uniqueIds = dedupeIds(ids);
+    if (uniqueIds.length === 0) return [];
+
+    const chunks = chunkIds(uniqueIds, TRACK_BATCH_SIZE);
+    const responses = await Promise.all(
+      chunks.map((chunk) =>
+        fetchSpotifyCollection<Song>(
+          `/tracks?ids=${chunk.join(",")}`,
+          "tracks",
+          ENTITY_REVALIDATE_SECONDS,
+        ),
+      ),
+    );
+
+    return orderByRequestedIds(responses.flat(), uniqueIds);
   },
 };
 
 export const spotyfiAlbumService: AlbumService = {
   async getOne(id: string): Promise<Album | null> {
-    console.log(`Fetching album with ID: ${id}`);
-    const accessToken = await getSpotifyAccessToken();
-    const url = `${SPOTIFY_API_BASE_URL}/albums/${id}`;
-    const response = await fetch(url, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    if (!response.ok) {
-      console.error(
-        `Spotify API error: ${response.status} ${response.statusText}`,
-      );
-      return null;
-    }
-    const data = await response.json();
-    console.log("Fetched album data:", data);
-    return data as Album;
+    return fetchSpotifyJson<Album>(`/albums/${id}`, ENTITY_REVALIDATE_SECONDS);
   },
   async getMany(ids: string[]): Promise<Album[] | null> {
-    const accessToken = await getSpotifyAccessToken();
-    const url = `${SPOTIFY_API_BASE_URL}/albums?ids=${ids.join(",")}`;
-    const response = await fetch(url, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    if (!response.ok) {
-      console.error(
-        `Spotify API error: ${response.status} ${response.statusText}`,
-      );
-      return null;
-    }
-    const data = await response.json();
-    return data.albums as Album[];
+    const uniqueIds = dedupeIds(ids);
+    if (uniqueIds.length === 0) return [];
+
+    const chunks = chunkIds(uniqueIds, ALBUM_BATCH_SIZE);
+    const responses = await Promise.all(
+      chunks.map((chunk) =>
+        fetchSpotifyCollection<Album>(
+          `/albums?ids=${chunk.join(",")}`,
+          "albums",
+          ENTITY_REVALIDATE_SECONDS,
+        ),
+      ),
+    );
+
+    return orderByRequestedIds(responses.flat(), uniqueIds);
   },
 };
 
 export const spotyfiArtistService: ArtistService = {
   async getOne(id: string): Promise<Artist | null> {
-    console.log(`Fetching artist with ID: ${id}`);
-    const accessToken = await getSpotifyAccessToken();
-    const url = `${SPOTIFY_API_BASE_URL}/artists/${id}`;
-    const response = await fetch(url, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    if (!response.ok) {
-      console.error(
-        `Spotify API error: ${response.status} ${response.statusText}`,
-      );
-      return null;
-    }
-    const data = await response.json();
-    console.log("Fetched artist data:", data);
-    return data as Artist;
+    return fetchSpotifyJson<Artist>(`/artists/${id}`, ENTITY_REVALIDATE_SECONDS);
   },
   async getMany(ids: string[]): Promise<Artist[] | null> {
-    const accessToken = await getSpotifyAccessToken();
-    const url = `${SPOTIFY_API_BASE_URL}/artists?ids=${ids.join(",")}`;
-    const response = await fetch(url, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    if (!response.ok) {
-      console.error(
-        `Spotify API error: ${response.status} ${response.statusText}`,
-      );
-      return null;
-    }
-    const data = await response.json();
-    return data.artists as Artist[];
+    const uniqueIds = dedupeIds(ids);
+    if (uniqueIds.length === 0) return [];
+
+    const chunks = chunkIds(uniqueIds, ARTIST_BATCH_SIZE);
+    const responses = await Promise.all(
+      chunks.map((chunk) =>
+        fetchSpotifyCollection<Artist>(
+          `/artists?ids=${chunk.join(",")}`,
+          "artists",
+          ENTITY_REVALIDATE_SECONDS,
+        ),
+      ),
+    );
+
+    return orderByRequestedIds(responses.flat(), uniqueIds);
   },
 };
 

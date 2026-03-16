@@ -4,8 +4,8 @@ import {
   ThemeSettings,
   ThemeTokenName,
   ThemeTokenOverrides,
-} from "../types/themeSettings";
-import { Theme } from "../types/theme";
+} from "@/types/themeSettings";
+import { Theme } from "@/types/theme";
 
 const MIN_SCALE = 0.8;
 const MAX_SCALE = 1.4;

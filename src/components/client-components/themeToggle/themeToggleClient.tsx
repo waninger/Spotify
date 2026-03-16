@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Theme, THEMES } from "../../../types/theme";
+import { Theme, THEMES } from "@/types/theme";
 import styles from "./themeToggle.module.scss";
 
 type Props = {

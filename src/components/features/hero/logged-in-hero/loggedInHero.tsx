@@ -1,6 +1,6 @@
-import { Playlist } from "../../../../types/playlist";
-import { PlaylistCard } from "../../playlists/playlist-card/playlistCard";
-import { Link } from "../../../ui/Link/link";
+import { Playlist } from "@/types/playlist";
+import { PlaylistCard } from "@/components/features/playlists/playlist-card/playlistCard";
+import { Link } from "@/components/ui/Link/link";
 import styles from "./loggedInHero.module.scss";
 
 type FeaturedPlaylist = {

@@ -1,7 +1,7 @@
-import { Song } from "../mock-data/mock-song";
-import { Artist } from "../mock-data/mock-artist";
-import { Album } from "../mock-data/mock-album";
-import { Playlist } from "../types/playlist";
+import { Song } from "@/mock-data/mock-song";
+import { Artist } from "@/mock-data/mock-artist";
+import { Album } from "@/mock-data/mock-album";
+import { Playlist } from "@/types/playlist";
 
 export interface SongService {
   getOne: (id: string) => Promise<Song | null>;

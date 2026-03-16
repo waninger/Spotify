@@ -1,7 +1,7 @@
-import { PlaylistService } from "./interfaces";
-import { playlist } from "../mock-data/mock-playlist";
+import { PlaylistService } from "@/repositories/interfaces";
+import { playlist } from "@/mock-data/mock-playlist";
 import { Pool } from "pg";
-import { Playlist } from "../types/playlist";
+import { Playlist } from "@/types/playlist";
 
 export const pool = new Pool({
   user: "spotify_admin",
@@ -137,7 +137,9 @@ export const playlistMockRepository: PlaylistService = {
   },
 
   async getAll(userId) {
-    return [playlist, playlist];
+    const playlist1 = playlist;
+    const playlist2 = { ...playlist, id: "playlist2", name: "Chill Vibes" };
+    return [playlist1, playlist2];
   },
   async addSongToPlaylist(listId: string, songId: string): Promise<void> {
     // Mock implementation, no actual database operation

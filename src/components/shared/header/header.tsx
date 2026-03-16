@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from "./header.module.scss";
-import LoginButton from "../../client-components/loginButton/loginButton";
-import ThemeToggle from "../../client-components/themeToggle/themeToggle";
+import LoginButton from "@/components/client-components/loginButton/loginButton";
+import ThemeToggle from "@/components/client-components/themeToggle/themeToggle";
 import { ReactElement } from "react";
 
 export default async function Header(): Promise<ReactElement<unknown, string>> {

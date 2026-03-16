@@ -4,14 +4,14 @@ import { playlistRepository } from "@/repositories/playlistRepository";
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { playlistId: string } }
+  { params }: { params: Promise<{ playlistId: string }> }
 ) {
   const session = await auth();
   if (!session?.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const playlistId = (await params).playlistId ?? null;
+  const { playlistId } = await params;
   if(!playlistId) {
     return NextResponse.json({ error: "Playlist ID required" }, { status: 400 });
   }

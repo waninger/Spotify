@@ -1,4 +1,4 @@
-import { Artist } from "../../../../mock-data/mock-artist";
+import { Artist } from "@/mock-data/mock-artist";
 import styles from "./artistCard.module.scss";
 import Link from "next/link";
 

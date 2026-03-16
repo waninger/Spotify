@@ -1,4 +1,4 @@
-import { Album } from "../../spotyfi-utils/mock-album";
+import { Album } from "@/mock-data/mock-album";
 import styles from "./albumCard.module.scss";
 import Link from "next/link";
 

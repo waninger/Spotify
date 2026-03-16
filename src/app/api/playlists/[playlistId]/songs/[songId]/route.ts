@@ -3,12 +3,11 @@ import { auth } from "@/auth";
 import { playlistRepository } from "@/repositories/playlistRepository";
 
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { playlistId: string; songId: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ playlistId: string; songId: string }> }
 ) {
   const session = await auth();
-  const playlistId = (await params).playlistId;
-  const songId = (await params).songId;
+  const { playlistId, songId } = await params;
   if (!session?.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

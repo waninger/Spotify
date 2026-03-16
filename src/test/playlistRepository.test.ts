@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { playlistMockRepository } from "../repositories/playlistRepository";
+import { playlistMockRepository } from "@/repositories/playlistRepository";
 
 const PLAYLIST_ID = "1";
 const EMAIL = "test@example.com";

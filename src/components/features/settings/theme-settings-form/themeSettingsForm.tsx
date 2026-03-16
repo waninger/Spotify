@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Theme } from "../../../../types/theme";
+import { Theme } from "@/types/theme";
 import {
   ALLOWED_THEME_TOKENS,
   DEFAULT_THEME_SETTINGS,
   ThemeSettings,
   ThemeTokenName,
-} from "../../../../types/themeSettings";
+} from "@/types/themeSettings";
 import styles from "./themeSettingsForm.module.scss";
 
 const TOKEN_LABELS: Record<ThemeTokenName, string> = {

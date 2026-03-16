@@ -1,4 +1,4 @@
-import { SearchResult } from "../repositories/interfaces";
+import { SearchResult } from "@/repositories/interfaces";
 export const mockSearchResult:SearchResult = {
   "tracks": {
     "href": "https://api.spotify.com/v1/search?query=the+killers&type=track&offset=0&limit=2",

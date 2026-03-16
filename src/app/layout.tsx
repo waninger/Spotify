@@ -1,9 +1,9 @@
 import "./styles/globals.scss";
-import { Providers } from "../providers/providers";
-import { getRequestContext } from "../utils/requestContext";
+import { Providers } from "@/providers/providers";
+import { getRequestContext } from "@/utils/requestContext";
 import { Theme } from "@/types/theme";
 import { kanit } from "./styles/fonts";
-import Header from "../components/shared/header/header";
+import Header from "@/components/shared/header/header";
 import { parseThemeSettingsCookie, toThemeCssVariables } from "@/utils/themeSettings";
 
 export default async function RootLayout({

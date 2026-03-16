@@ -1,8 +1,8 @@
-import { Song } from "../../../../mock-data/mock-song";
-import AudioPlayback from "../audio-playback/audioPlayback";
+import { Song } from "@/mock-data/mock-song";
+import AudioPlayback from "@/components/features/songs/audio-playback/audioPlayback";
 import styles from "./songCard.module.scss";
-import { Link } from "../../../ui/Link/link";
-import AddSongModal from "../add-song-modal/addSongModal";
+import { Link } from "@/components/ui/Link/link";
+import AddSongModal from "@/components/features/songs/add-song-modal/addSongModal";
 
 export type SongCardVariant = "default" | "compact" | "detail" | "search";
 

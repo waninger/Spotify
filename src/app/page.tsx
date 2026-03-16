@@ -1,12 +1,12 @@
 import { auth } from "@/auth";
-import { Playlist } from "../types/playlist";
-import { Song } from "../mock-data/mock-song";
-import { Album } from "../mock-data/mock-album";
-import { PlaylistCard } from "../components/features/playlists/playlist-card/playlistCard";
-import LoggedInHero from "../components/features/hero/logged-in-hero/loggedInHero";
-import { playlistProvider, songProvider, albumProvider } from "../repositories/repositoryIndex";
-import SearchBar from "../components/shared/search-bar/searchBar";
-import { Link } from "../components/ui/Link/link";
+import { Playlist } from "@/types/playlist";
+import { Song } from "@/mock-data/mock-song";
+import { Album } from "@/mock-data/mock-album";
+import { PlaylistCard } from "@/components/features/playlists/playlist-card/playlistCard";
+import LoggedInHero from "@/components/features/hero/logged-in-hero/loggedInHero";
+import { playlistProvider, songProvider, albumProvider } from "@/repositories/repositoryIndex";
+import SearchBar from "@/components/shared/search-bar/searchBar";
+import { Link } from "@/components/ui/Link/link";
 import styles from "./page.module.scss";
 
 export default async function Spotify() {
