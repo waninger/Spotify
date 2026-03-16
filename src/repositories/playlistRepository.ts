@@ -3,13 +3,11 @@ import { playlist } from "@/mock-data/mock-playlist";
 import { Pool } from "pg";
 import { Playlist } from "@/types/playlist";
 
+const connectionString = process.env.DATABASE_URL || "postgresql://spotify_admin:password@localhost:5432/spotify";
 export const pool = new Pool({
-  user: "spotify_admin",
-  host: "localhost",
-  database: "spotify",
-  password: "password",
-  port: 5432,
+  connectionString,
 });
+  
 
 export const playlistRepository: PlaylistService = {
   async getList(id: string, email: string): Promise<Playlist | null> {
