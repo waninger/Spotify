@@ -18,6 +18,7 @@ export type ThemeSettings = {
   mode: Theme;
   scaleUi: number;
   scaleText: number;
+  scaleSpace: number;
   tokens: ThemeTokenOverrides;
 };
 
@@ -25,6 +26,7 @@ export const DEFAULT_THEME_SETTINGS: ThemeSettings = {
   mode: "system",
   scaleUi: 1,
   scaleText: 1,
+  scaleSpace: 1,
   tokens: {},
 };
 

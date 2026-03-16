@@ -33,12 +33,19 @@
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
 
     /* --- Spacing scale --- */
-    --space-1: 4px;
-    --space-2: 8px;
-    --space-3: 12px;
-    --space-4: 16px;
-    --space-5: 24px;
-    --space-6: 32px;
+    --scale-space: 1;
+    --space-1-base: 4px;
+    --space-2-base: 8px;
+    --space-3-base: 12px;
+    --space-4-base: 16px;
+    --space-5-base: 24px;
+    --space-6-base: 32px;
+    --space-1: calc(var(--space-1-base) * var(--scale-space));
+    --space-2: calc(var(--space-2-base) * var(--scale-space));
+    --space-3: calc(var(--space-3-base) * var(--scale-space));
+    --space-4: calc(var(--space-4-base) * var(--scale-space));
+    --space-5: calc(var(--space-5-base) * var(--scale-space));
+    --space-6: calc(var(--space-6-base) * var(--scale-space));
 
     /* --- Transitions --- */
     --duration-fast: 120ms;

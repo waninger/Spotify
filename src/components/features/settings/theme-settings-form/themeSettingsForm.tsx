@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Theme } from "../../../../types/theme";
 import {
   ALLOWED_THEME_TOKENS,
@@ -20,6 +20,8 @@ const TOKEN_LABELS: Record<ThemeTokenName, string> = {
   "--color-border": "Border",
 };
 
+const THEME_MODES: Theme[] = ["system", "light", "dark"];
+
 type Props = {
   initialSettings: ThemeSettings;
 };
@@ -33,14 +35,17 @@ function resolveSystemTheme() {
 function applySettingsPreview(settings: ThemeSettings) {
   const root = document.documentElement;
 
-  const effectiveTheme = settings.mode === "system" ? resolveSystemTheme() : settings.mode;
+  const effectiveTheme =
+    settings.mode === "system" ? resolveSystemTheme() : settings.mode;
   root.setAttribute("data-theme", effectiveTheme);
 
   const scaleUi = settings.scaleUi ?? DEFAULT_THEME_SETTINGS.scaleUi;
   const scaleText = settings.scaleText ?? DEFAULT_THEME_SETTINGS.scaleText;
+  const scaleSpace = settings.scaleSpace ?? DEFAULT_THEME_SETTINGS.scaleSpace;
 
   root.style.setProperty("--scale-ui", String(scaleUi));
   root.style.setProperty("--scale-text", String(scaleText));
+  root.style.setProperty("--scale-space", String(scaleSpace));
 
   for (const token of ALLOWED_THEME_TOKENS) {
     const value = settings.tokens[token];
@@ -56,10 +61,7 @@ function normalizeHex(value: string): string {
   if (!value.startsWith("#")) return value;
   if (value.length === 4) {
     return (
-      "#" +
-      value[1] + value[1] +
-      value[2] + value[2] +
-      value[3] + value[3]
+      "#" + value[1] + value[1] + value[2] + value[2] + value[3] + value[3]
     );
   }
   return value;
@@ -77,8 +79,6 @@ export default function ThemeSettingsForm({ initialSettings }: Props) {
   const [isSaving, setIsSaving] = useState(false);
   const [status, setStatus] = useState<string>("");
 
-  const themeModes = useMemo(() => ["system", "light", "dark"] as Theme[], []);
-
   function updateMode(mode: Theme) {
     const next = { ...settings, mode };
     setSettings(next);
@@ -95,6 +95,13 @@ export default function ThemeSettingsForm({ initialSettings }: Props) {
   function updateTextScale(scaleText: number) {
     const rounded = Math.round(scaleText * 100) / 100;
     const next = { ...settings, scaleText: rounded };
+    setSettings(next);
+    applySettingsPreview(next);
+  }
+
+  function updateSpaceScale(scaleSpace: number) {
+    const rounded = Math.round(scaleSpace * 100) / 100;
+    const next = { ...settings, scaleSpace: rounded };
     setSettings(next);
     applySettingsPreview(next);
   }
@@ -149,17 +156,21 @@ export default function ThemeSettingsForm({ initialSettings }: Props) {
     <div className={styles.container}>
       <section className={styles.card}>
         <h2 className={styles.title}>Theme Mode</h2>
-        <p className={styles.description}>Choose how the app should resolve light and dark styles.</p>
+        <p className={styles.description}>
+          Choose how the app should resolve light and dark styles.
+        </p>
 
         <div className={styles.row}>
-          <label htmlFor="theme-mode" className={styles.label}>Mode</label>
+          <label htmlFor="theme-mode" className={styles.label}>
+            Mode
+          </label>
           <select
             id="theme-mode"
             value={settings.mode}
             onChange={(e) => updateMode(e.target.value as Theme)}
             className={styles.select}
           >
-            {themeModes.map((mode) => (
+            {THEME_MODES.map((mode) => (
               <option key={mode} value={mode}>
                 {mode.charAt(0).toUpperCase() + mode.slice(1)}
               </option>
@@ -170,10 +181,14 @@ export default function ThemeSettingsForm({ initialSettings }: Props) {
 
       <section className={styles.card}>
         <h2 className={styles.title}>UI Scale</h2>
-        <p className={styles.description}>Scale component heights using <code>--scale-ui</code>.</p>
+        <p className={styles.description}>
+          Scale component heights using <code>--scale-ui</code>.
+        </p>
 
         <div className={styles.row}>
-          <label htmlFor="ui-scale" className={styles.label}>Scale</label>
+          <label htmlFor="ui-scale" className={styles.label}>
+            Scale
+          </label>
           <input
             id="ui-scale"
             type="range"
@@ -190,10 +205,14 @@ export default function ThemeSettingsForm({ initialSettings }: Props) {
 
       <section className={styles.card}>
         <h2 className={styles.title}>Text Scale</h2>
-        <p className={styles.description}>Scale typography tokens using <code>--scale-text</code>.</p>
+        <p className={styles.description}>
+          Scale typography tokens using <code>--scale-text</code>.
+        </p>
 
         <div className={styles.row}>
-          <label htmlFor="text-scale" className={styles.label}>Scale</label>
+          <label htmlFor="text-scale" className={styles.label}>
+            Scale
+          </label>
           <input
             id="text-scale"
             type="range"
@@ -205,19 +224,55 @@ export default function ThemeSettingsForm({ initialSettings }: Props) {
             onChange={(e) => updateTextScale(Number(e.target.value))}
           />
           <span className={styles.value}>
-            {(settings.scaleText ?? DEFAULT_THEME_SETTINGS.scaleText).toFixed(2)}x
+            {(settings.scaleText ?? DEFAULT_THEME_SETTINGS.scaleText).toFixed(
+              2,
+            )}
+            x
+          </span>
+        </div>
+      </section>
+
+      <section className={styles.card}>
+        <h2 className={styles.title}>Space Scale</h2>
+        <p className={styles.description}>
+          Scale spacing tokens using <code>--scale-space</code>.
+        </p>
+
+        <div className={styles.row}>
+          <label htmlFor="space-scale" className={styles.label}>
+            Scale
+          </label>
+          <input
+            id="space-scale"
+            type="range"
+            min={0.8}
+            max={1.4}
+            step={0.01}
+            value={settings.scaleSpace ?? DEFAULT_THEME_SETTINGS.scaleSpace}
+            className={styles.range}
+            onChange={(e) => updateSpaceScale(Number(e.target.value))}
+          />
+          <span className={styles.value}>
+            {(settings.scaleSpace ?? DEFAULT_THEME_SETTINGS.scaleSpace).toFixed(
+              2,
+            )}
+            x
           </span>
         </div>
       </section>
 
       <section className={styles.card}>
         <h2 className={styles.title}>Custom Tokens</h2>
-        <p className={styles.description}>Override selected CSS variables and build your own theme palette.</p>
+        <p className={styles.description}>
+          Override selected CSS variables and build your own theme palette.
+        </p>
 
         <div className={styles.tokenGrid}>
           {ALLOWED_THEME_TOKENS.map((token) => (
             <div key={token} className={styles.tokenRow}>
-              <label htmlFor={token} className={styles.label}>{TOKEN_LABELS[token]}</label>
+              <label htmlFor={token} className={styles.label}>
+                {TOKEN_LABELS[token]}
+              </label>
               <input
                 id={token}
                 type="color"
@@ -238,10 +293,20 @@ export default function ThemeSettingsForm({ initialSettings }: Props) {
       </section>
 
       <div className={styles.actions}>
-        <button type="button" onClick={resetSettings} className={styles.secondaryButton} disabled={isSaving}>
+        <button
+          type="button"
+          onClick={resetSettings}
+          className={styles.secondaryButton}
+          disabled={isSaving}
+        >
           Reset
         </button>
-        <button type="button" onClick={saveSettings} className={styles.primaryButton} disabled={isSaving}>
+        <button
+          type="button"
+          onClick={saveSettings}
+          className={styles.primaryButton}
+          disabled={isSaving}
+        >
           {isSaving ? "Saving..." : "Save Settings"}
         </button>
       </div>

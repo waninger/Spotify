@@ -49,9 +49,10 @@ export function normalizeThemeSettings(value: unknown): ThemeSettings {
   const mode = isTheme(raw?.mode) ? raw.mode : DEFAULT_THEME_SETTINGS.mode;
   const scaleUi = clampScale(raw?.scaleUi);
   const scaleText = clampScale(raw?.scaleText);
+  const scaleSpace = clampScale(raw?.scaleSpace);
   const tokens = sanitizeTokens(raw?.tokens);
 
-  return { mode, scaleUi, scaleText, tokens };
+  return { mode, scaleUi, scaleText, scaleSpace, tokens };
 }
 
 export function parseThemeSettingsCookie(cookieValue?: string): ThemeSettings {
@@ -73,6 +74,7 @@ export function toThemeCssVariables(settings: ThemeSettings): Record<string, str
   const vars: Record<string, string> = {
     "--scale-ui": settings.scaleUi.toString(),
     "--scale-text": settings.scaleText.toString(),
+    "--scale-space": settings.scaleSpace.toString(),
   };
 
   for (const token of ALLOWED_THEME_TOKENS as readonly ThemeTokenName[]) {
