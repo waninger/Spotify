@@ -59,11 +59,17 @@
     --text-md-base: 1rem;
     --text-lg-base: 1.125rem;
     --text-xl-base: 1.25rem;
+    --text-2xl-base: 1.5rem;
+    --text-3xl-base: 2rem;
+    --text-4xl-base: 2.25rem;
     --text-xs: calc(var(--text-xs-base) * var(--scale-text));
     --text-sm: calc(var(--text-sm-base) * var(--scale-text));
     --text-md: calc(var(--text-md-base) * var(--scale-text));
     --text-lg: calc(var(--text-lg-base) * var(--scale-text));
     --text-xl: calc(var(--text-xl-base) * var(--scale-text));
+    --text-2xl: calc(var(--text-2xl-base) * var(--scale-text));
+    --text-3xl: calc(var(--text-3xl-base) * var(--scale-text));
+    --text-4xl: calc(var(--text-4xl-base) * var(--scale-text));
 
     /* --- Component size scale (height) --- */
     --scale-ui: 1;

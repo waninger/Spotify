@@ -54,7 +54,7 @@
 }
 
 .heroMainTitle {
-  font-size: clamp(2rem, 4.2vw, 3.6rem);
+  font-size: clamp(var(--text-2xl), 4.2vw, var(--text-4xl));
   line-height: 1.06;
   font-weight: 800;
   color: var(--color-text);
@@ -91,7 +91,7 @@
 }
 
 .heroStatValue {
-  font-size: clamp(1.2rem, 2.3vw, 1.7rem);
+  font-size: clamp(var(--text-xl), 2.3vw, var(--text-2xl));
   font-weight: 700;
   color: var(--color-text);
 }
