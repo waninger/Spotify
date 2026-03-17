@@ -28,11 +28,6 @@ export default async function Header(): Promise<ReactElement<unknown, string>> {
             </Link>
           </li> 
           <li>
-            <Link href="/playlist" className={styles.link}>
-              Playlist
-            </Link>
-          </li>
-          <li>
             <Link href="/settings" className={styles.link}>
               Settings
             </Link>
