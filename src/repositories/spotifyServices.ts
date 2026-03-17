@@ -15,20 +15,9 @@ import { getSpotifyAccessToken } from "@/repositories/accessToken";
 const SPOTIFY_API_BASE_URL = "https://api.spotify.com/v1";
 const SEARCH_REVALIDATE_SECONDS = 5 * 60;
 const ENTITY_REVALIDATE_SECONDS = 15 * 60;
-const TRACK_BATCH_SIZE = 50;
-const ARTIST_BATCH_SIZE = 50;
-const ALBUM_BATCH_SIZE = 20;
 
 function dedupeIds(ids: string[]): string[] {
   return [...new Set(ids.filter(Boolean))];
-}
-
-function chunkIds(ids: string[], size: number): string[][] {
-  const chunks: string[][] = [];
-  for (let index = 0; index < ids.length; index += size) {
-    chunks.push(ids.slice(index, index + size));
-  }
-  return chunks;
 }
 
 async function fetchSpotifyJson<T>(
@@ -58,24 +47,6 @@ async function fetchSpotifyJson<T>(
   return (await response.json()) as T;
 }
 
-async function fetchSpotifyCollection<T>(
-  path: string,
-  field: string,
-  revalidateSeconds: number,
-): Promise<T[]> {
-  const data = await fetchSpotifyJson<Record<string, T[] | undefined>>(
-    path,
-    revalidateSeconds,
-  );
-  if (!data) return [];
-  return (data[field] ?? []).filter(Boolean) as T[];
-}
-
-function orderByRequestedIds<T extends { id: string }>(items: T[], ids: string[]): T[] {
-  const byId = new Map(items.map((item) => [item.id, item]));
-  return ids.map((id) => byId.get(id)).filter((item): item is T => item !== undefined);
-}
-
 export const spotifySearchService: SearchService = {
   async search(
     query: string,
@@ -100,18 +71,13 @@ export const spotifySongService: SongService = {
     const uniqueIds = dedupeIds(ids);
     if (uniqueIds.length === 0) return [];
 
-    const chunks = chunkIds(uniqueIds, TRACK_BATCH_SIZE);
-    const responses = await Promise.all(
-      chunks.map((chunk) =>
-        fetchSpotifyCollection<Song>(
-          `/tracks?ids=${chunk.join(",")}`,
-          "tracks",
-          ENTITY_REVALIDATE_SECONDS,
-        ),
+    const songs = await Promise.all(
+      uniqueIds.map((id) =>
+        fetchSpotifyJson<Song>(`/tracks/${id}`, ENTITY_REVALIDATE_SECONDS),
       ),
     );
 
-    return orderByRequestedIds(responses.flat(), uniqueIds);
+    return songs.filter((song): song is Song => song !== null);
   },
 };
 
@@ -123,18 +89,13 @@ export const spotyfiAlbumService: AlbumService = {
     const uniqueIds = dedupeIds(ids);
     if (uniqueIds.length === 0) return [];
 
-    const chunks = chunkIds(uniqueIds, ALBUM_BATCH_SIZE);
-    const responses = await Promise.all(
-      chunks.map((chunk) =>
-        fetchSpotifyCollection<Album>(
-          `/albums?ids=${chunk.join(",")}`,
-          "albums",
-          ENTITY_REVALIDATE_SECONDS,
-        ),
+    const albums = await Promise.all(
+      uniqueIds.map((id) =>
+        fetchSpotifyJson<Album>(`/albums/${id}`, ENTITY_REVALIDATE_SECONDS),
       ),
     );
 
-    return orderByRequestedIds(responses.flat(), uniqueIds);
+    return albums.filter((album): album is Album => album !== null);
   },
 };
 
@@ -146,18 +107,13 @@ export const spotyfiArtistService: ArtistService = {
     const uniqueIds = dedupeIds(ids);
     if (uniqueIds.length === 0) return [];
 
-    const chunks = chunkIds(uniqueIds, ARTIST_BATCH_SIZE);
-    const responses = await Promise.all(
-      chunks.map((chunk) =>
-        fetchSpotifyCollection<Artist>(
-          `/artists?ids=${chunk.join(",")}`,
-          "artists",
-          ENTITY_REVALIDATE_SECONDS,
-        ),
+    const artists = await Promise.all(
+      uniqueIds.map((id) =>
+        fetchSpotifyJson<Artist>(`/artists/${id}`, ENTITY_REVALIDATE_SECONDS),
       ),
     );
 
-    return orderByRequestedIds(responses.flat(), uniqueIds);
+    return artists.filter((artist): artist is Artist => artist !== null);
   },
 };
 
@@ -168,8 +124,8 @@ export const spotifyMockSongService: SongService = {
   },
   async getMany(ids: string[]): Promise<Song[] | null> {
     console.log(ids);
-    const songs: Song[] = Array(5).fill(song)
-    return songs
+    const songs: Song[] = ids.map((id) => ({ ...song, id }));
+    return songs;
   },
 };
 
