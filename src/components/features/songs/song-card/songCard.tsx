@@ -1,5 +1,4 @@
 import { Song } from "@/mock-data/mock-song";
-import AudioPlayback from "@/components/features/songs/audio-playback/audioPlayback";
 import styles from "./songCard.module.scss";
 import { Link } from "@/components/ui/Link/link";
 import AddSongModal from "@/components/features/songs/add-song-modal/addSongModal";
@@ -22,18 +21,12 @@ export function SongCard({ song, variant = "default", index }: SongCardProps) {
   return (
     <div className={containerClass}>
 
-      {/* --- Leading col: track number (compact) or audio player (default/detail) --- */}
-      {variant === "compact" ? (
-        <span className={styles.trackNumber}>{index ?? song.track_number}</span>
-      ) : (
-        song.preview_url
-          ? <AudioPlayback src={song.preview_url} />
-          : <div className={styles.filler} />
-      )}
-
       {/* --- Main info --- */}
       <div className={styles.info}>
         <div className={styles.nameRow}>
+          {variant === "compact" && (
+            <span className={styles.trackNumber}>{index ?? song.track_number}</span>
+          )}
           <Link href={`/song/${song.id}`} variant="plain" size="md" underline="hover" className={styles.name}>
             {song.name}
           </Link>

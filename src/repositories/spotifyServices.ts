@@ -11,6 +11,16 @@ import {
 } from "@/repositories/interfaces";
 import { Album, album } from "@/mock-data/mock-album";
 import { getSpotifyAccessToken } from "@/repositories/accessToken";
+import {
+  normalizeAlbum,
+  normalizeArtist,
+  normalizeSong,
+} from "../utils/normalizeSpotify";
+import type {
+  RawSpotifyAlbum,
+  RawSpotifyArtist,
+  RawSpotifySong,
+} from "../utils/normalizeSpotify";
 
 const SPOTIFY_API_BASE_URL = "https://api.spotify.com/v1";
 const SEARCH_REVALIDATE_SECONDS = 5 * 60;
@@ -65,7 +75,8 @@ export const spotifySearchService: SearchService = {
 
 export const spotifySongService: SongService = {
   async getOne(id: string): Promise<Song | null> {
-    return fetchSpotifyJson<Song>(`/tracks/${id}`, ENTITY_REVALIDATE_SECONDS);
+    const response = await fetchSpotifyJson<RawSpotifySong>(`/tracks/${id}`, ENTITY_REVALIDATE_SECONDS);
+    return response ? normalizeSong(response) : null;
   },
   async getMany(ids: string[]): Promise<Song[]> {
     const uniqueIds = dedupeIds(ids);
@@ -73,17 +84,20 @@ export const spotifySongService: SongService = {
 
     const songs = await Promise.all(
       uniqueIds.map((id) =>
-        fetchSpotifyJson<Song>(`/tracks/${id}`, ENTITY_REVALIDATE_SECONDS),
+        fetchSpotifyJson<RawSpotifySong>(`/tracks/${id}`, ENTITY_REVALIDATE_SECONDS),
       ),
     );
 
-    return songs.filter((song): song is Song => song !== null);
+    return songs
+      .filter((song: RawSpotifySong | null): song is RawSpotifySong => song !== null)
+      .map(normalizeSong);
   },
 };
 
 export const spotyfiAlbumService: AlbumService = {
   async getOne(id: string): Promise<Album | null> {
-    return fetchSpotifyJson<Album>(`/albums/${id}`, ENTITY_REVALIDATE_SECONDS);
+    const response = await fetchSpotifyJson<RawSpotifyAlbum>(`/albums/${id}`, ENTITY_REVALIDATE_SECONDS);
+    return response ? normalizeAlbum(response) : null;
   },
   async getMany(ids: string[]): Promise<Album[] | null> {
     const uniqueIds = dedupeIds(ids);
@@ -91,17 +105,20 @@ export const spotyfiAlbumService: AlbumService = {
 
     const albums = await Promise.all(
       uniqueIds.map((id) =>
-        fetchSpotifyJson<Album>(`/albums/${id}`, ENTITY_REVALIDATE_SECONDS),
+        fetchSpotifyJson<RawSpotifyAlbum>(`/albums/${id}`, ENTITY_REVALIDATE_SECONDS),
       ),
     );
 
-    return albums.filter((album): album is Album => album !== null);
+    return albums
+      .filter((album: RawSpotifyAlbum | null): album is RawSpotifyAlbum => album !== null)
+      .map(normalizeAlbum);
   },
 };
 
 export const spotyfiArtistService: ArtistService = {
   async getOne(id: string): Promise<Artist | null> {
-    return fetchSpotifyJson<Artist>(`/artists/${id}`, ENTITY_REVALIDATE_SECONDS);
+    const response = await fetchSpotifyJson<RawSpotifyArtist>(`/artists/${id}`, ENTITY_REVALIDATE_SECONDS);
+    return response ? normalizeArtist(response) : null;
   },
   async getMany(ids: string[]): Promise<Artist[] | null> {
     const uniqueIds = dedupeIds(ids);
@@ -109,11 +126,13 @@ export const spotyfiArtistService: ArtistService = {
 
     const artists = await Promise.all(
       uniqueIds.map((id) =>
-        fetchSpotifyJson<Artist>(`/artists/${id}`, ENTITY_REVALIDATE_SECONDS),
+        fetchSpotifyJson<RawSpotifyArtist>(`/artists/${id}`, ENTITY_REVALIDATE_SECONDS),
       ),
     );
 
-    return artists.filter((artist): artist is Artist => artist !== null);
+    return artists
+      .filter((artist: RawSpotifyArtist | null): artist is RawSpotifyArtist => artist !== null)
+      .map(normalizeArtist);
   },
 };
 

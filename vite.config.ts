@@ -7,7 +7,11 @@ export default defineConfig(({ mode }) => ({
   test: {
     environment: "node",
     setupFiles:
-      mode === "prod" ? "/src/test/setup.prod.ts" : "/src/test/setup.dev.ts",
+      mode === "integration"
+        ? "/src/test/setup.integration.ts"
+        : mode === "prod"
+          ? "/src/test/setup.prod.ts"
+          : "/src/test/setup.dev.ts",
     env: loadEnv(mode, process.cwd(), ""),
   },
 }));

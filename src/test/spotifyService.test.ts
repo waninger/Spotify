@@ -57,6 +57,7 @@ test("Get a non null answer from artistService", async () => {
   });
 });
 
+
 test("Get a non null answer from albumService", async () => {
   const album = await albumProvider.getOne(ALBUM_ID);
 

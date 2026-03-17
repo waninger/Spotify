@@ -1,11 +1,11 @@
 import { expect, test } from "vitest";
-import { playlistMockRepository } from "@/repositories/playlistRepository";
+import { playlistProvider } from "@/repositories/repositoryIndex";
 
 const PLAYLIST_ID = "1";
 const EMAIL = "test@example.com";
 
 test("Get a non-null playlist from repository", async () => {
-    const playlist = await playlistMockRepository.getList(PLAYLIST_ID, EMAIL);
+    const playlist = await playlistProvider.getList(PLAYLIST_ID, EMAIL);
 
     expect(playlist).toMatchObject({
         id: expect.any(String),
@@ -16,7 +16,7 @@ test("Get a non-null playlist from repository", async () => {
 });
 
 test("Get all playlists for a user", async () => {
-    const playlists = await playlistMockRepository.getAll(EMAIL);
+    const playlists = await playlistProvider.getAll(EMAIL);
 
     expect(playlists).toBeTruthy();
     expect(playlists?.length).toBeGreaterThan(0);

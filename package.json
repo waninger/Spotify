@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test:dev": "vitest --mode dev",
     "test:prod": "vitest --mode prod",
+    "test:integration": "RUN_DB_INTEGRATION=true vitest run --mode integration src/test/db.integration.test.ts",
     "test:ci": "vitest run"
   },
   "dependencies": {

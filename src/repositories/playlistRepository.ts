@@ -133,7 +133,6 @@ export const playlistMockRepository: PlaylistService = {
   async getList(id: string): Promise<Playlist | null> {
     return playlist;
   },
-
   async getAll(userId) {
     const playlist1 = playlist;
     const playlist2 = { ...playlist, id: "playlist2", name: "Chill Vibes" };

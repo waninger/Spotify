@@ -100,18 +100,11 @@
   user-select: none;
 }
 
-/* --- Leading filler (when no audio) --- */
-.filler {
-  flex-shrink: 0;
-  width: 2rem;
-  height: 2rem;
-}
-
 /* --- Track number (compact variant) --- */
 .trackNumber {
   flex-shrink: 0;
-  width: 2rem;
-  text-align: center;
+  min-width: 2ch;
+  text-align: right;
   font-size: var(--text-sm);
   color: var(--color-text-muted);
   font-variant-numeric: tabular-nums;
@@ -121,7 +114,7 @@
    Variants
    ============================================================ */
 
-/* compact — tighter, no audio player */
+/* compact — tighter list row */
 .variant-compact {
   padding: var(--space-1) var(--space-2);
 
