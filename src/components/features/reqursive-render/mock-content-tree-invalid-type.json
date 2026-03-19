@@ -1,0 +1,16 @@
+{
+  "type": "HEADING",
+  "id": "invalid-root",
+  "children": [
+    {
+      "type": "PARAGRAPH",
+      "id": "known-node",
+      "children": []
+    },
+    {
+      "type": "QUOTE",
+      "id": "unsupported-node-type",
+      "children": []
+    }
+  ]
+}

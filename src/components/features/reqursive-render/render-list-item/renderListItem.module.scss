@@ -1,0 +1,15 @@
+.item {
+  color: var(--color-text);
+  font-size: var(--text-sm);
+}
+
+.label {
+  display: inline-block;
+  font-weight: 500;
+}
+
+.children {
+  margin-top: var(--space-2);
+  padding-left: var(--space-3);
+  border-left: 1px solid color-mix(in oklab, var(--color-border) 70%, transparent);
+}

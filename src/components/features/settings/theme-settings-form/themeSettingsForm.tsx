@@ -85,23 +85,12 @@ export default function ThemeSettingsForm({ initialSettings }: Props) {
     applySettingsPreview(next);
   }
 
-  function updateScale(scaleUi: number) {
-    const rounded = Math.round(scaleUi * 100) / 100;
-    const next = { ...settings, scaleUi: rounded };
-    setSettings(next);
-    applySettingsPreview(next);
-  }
-
-  function updateTextScale(scaleText: number) {
-    const rounded = Math.round(scaleText * 100) / 100;
-    const next = { ...settings, scaleText: rounded };
-    setSettings(next);
-    applySettingsPreview(next);
-  }
-
-  function updateSpaceScale(scaleSpace: number) {
-    const rounded = Math.round(scaleSpace * 100) / 100;
-    const next = { ...settings, scaleSpace: rounded };
+  function updateNumericScale(
+    key: "scaleUi" | "scaleText" | "scaleSpace",
+    value: number,
+  ) {
+    const rounded = Math.round(value * 100) / 100;
+    const next = { ...settings, [key]: rounded } as ThemeSettings;
     setSettings(next);
     applySettingsPreview(next);
   }
@@ -197,7 +186,7 @@ export default function ThemeSettingsForm({ initialSettings }: Props) {
             step={0.01}
             value={settings.scaleUi}
             className={styles.range}
-            onChange={(e) => updateScale(Number(e.target.value))}
+            onChange={(e) => updateNumericScale("scaleUi", Number(e.target.value))}
           />
           <span className={styles.value}>{settings.scaleUi.toFixed(2)}x</span>
         </div>
@@ -221,7 +210,7 @@ export default function ThemeSettingsForm({ initialSettings }: Props) {
             step={0.01}
             value={settings.scaleText ?? DEFAULT_THEME_SETTINGS.scaleText}
             className={styles.range}
-            onChange={(e) => updateTextScale(Number(e.target.value))}
+            onChange={(e) => updateNumericScale("scaleText", Number(e.target.value))}
           />
           <span className={styles.value}>
             {(settings.scaleText ?? DEFAULT_THEME_SETTINGS.scaleText).toFixed(
@@ -250,7 +239,7 @@ export default function ThemeSettingsForm({ initialSettings }: Props) {
             step={0.01}
             value={settings.scaleSpace ?? DEFAULT_THEME_SETTINGS.scaleSpace}
             className={styles.range}
-            onChange={(e) => updateSpaceScale(Number(e.target.value))}
+            onChange={(e) => updateNumericScale("scaleSpace", Number(e.target.value))}
           />
           <span className={styles.value}>
             {(settings.scaleSpace ?? DEFAULT_THEME_SETTINGS.scaleSpace).toFixed(
