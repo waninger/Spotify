@@ -1,4 +1,4 @@
-import { NODE_RENDERERS } from "./renderers";
+import { NODE_RENDERERS } from "./render-components/renderers";
 import { ContentNode } from "./types";
 
 type ReqursiveProps = {

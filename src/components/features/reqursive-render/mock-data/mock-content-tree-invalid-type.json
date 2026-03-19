@@ -1,0 +1,45 @@
+{
+  "type": "HEADING",
+  "id": "invalid-root",
+  "parameters": {
+    "text": "Mixed Validity Content"
+  },
+  "children": [
+    {
+      "type": "PARAGRAPH",
+      "id": "known-node",
+      "parameters": {
+        "text": "This one should render."
+      },
+      "children": []
+    },
+    {
+      "type": "QUOTE",
+      "id": "unsupported-node-type",
+      "parameters": {
+        "text": "This should be discarded with its subtree."
+      },
+      "children": [
+        {
+          "type": "IMAGE",
+          "id": "nested-under-unknown",
+          "parameters": {
+            "url": "https://picsum.photos/seed/should-not-render/800/400",
+            "alt": "This should never render because its parent is unknown.",
+            "caption": "Discarded subtree"
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "type": "CALLOUT",
+      "id": "known-callout",
+      "parameters": {
+        "title": "Still valid",
+        "text": "Known siblings continue to render even when an unknown node is dropped."
+      },
+      "children": []
+    }
+  ]
+}

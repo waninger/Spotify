@@ -1,0 +1,10 @@
+{
+  "type": "IMAGE",
+  "id": "release-preview-image",
+  "parameters": {
+    "url": "https://picsum.photos/seed/release-preview/900/520",
+    "alt": "Interface preview used in release notes.",
+    "caption": "Mock screenshot for the release summary."
+  },
+  "children": []
+}

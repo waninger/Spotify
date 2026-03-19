@@ -1,0 +1,105 @@
+{
+  "type": "ROOT",
+  "id": "root",
+  "parameters": {},
+  "children": [
+    {
+      "type": "HEADING",
+      "id": "root-heading",
+      "parameters": {
+        "text": "Recursive Render Demo"
+      },
+      "children": [
+        {
+          "type": "PARAGRAPH",
+          "id": "intro-paragraph",
+          "parameters": {
+            "text": "This intro paragraph is loaded from mock API data."
+          },
+          "children": []
+        },
+        {
+          "type": "IMAGE",
+          "id": "demo-image",
+          "parameters": {
+            "url": "https://picsum.photos/seed/recursive-render/960/540",
+            "alt": "Abstract illustration used as recursive render demo artwork.",
+            "caption": "A mock image component driven entirely by JSON parameters."
+          },
+          "children": []
+        },
+        {
+          "type": "CALLOUT",
+          "id": "demo-callout",
+          "parameters": {
+            "title": "Why this shape works",
+            "text": "The renderer owns layout while the API only provides content values."
+          },
+          "children": [
+            {
+              "type": "PARAGRAPH",
+              "id": "demo-callout-note",
+              "parameters": {
+                "text": "That keeps the contract stable even as the UI evolves."
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "type": "LIST",
+          "id": "feature-list",
+          "parameters": {
+            "title": "Feature highlights"
+          },
+          "children": [
+            {
+              "type": "LIST_ITEM",
+              "id": "feature-item-one",
+              "parameters": {
+                "text": "Tree translation is type-safe."
+              },
+              "children": []
+            },
+            {
+              "type": "LIST_ITEM",
+              "id": "feature-item-two",
+              "parameters": {
+                "text": "Unknown node types are ignored."
+              },
+              "children": []
+            },
+            {
+              "type": "LIST_ITEM",
+              "id": "feature-item-three",
+              "parameters": {
+                "text": "Nested nodes can hold their own metadata."
+              },
+              "children": [
+                {
+                  "type": "PARAGRAPH",
+                  "id": "feature-item-three-note",
+                  "parameters": {
+                    "text": "Children of recognized nodes still render recursively."
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "LINK_CARD",
+          "id": "demo-doc-link",
+          "parameters": {
+            "title": "See the registry pattern",
+            "description": "Open the renderer registry file to see how node types map to components.",
+            "href": "https://nextjs.org/docs/app",
+            "label": "Open reference"
+          },
+          "children": []
+        }
+      ]
+    }
+  ]
+}

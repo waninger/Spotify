@@ -1,0 +1,11 @@
+{
+  "type": "LINK_CARD",
+  "id": "phase-2-runbook",
+  "parameters": {
+    "title": "Open deploy runbook",
+    "description": "This mock card stands in for a richer linked resource component.",
+    "href": "https://example.com/runbook",
+    "label": "Open runbook"
+  },
+  "children": []
+}

@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  max-width: 34rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  object-fit: cover;
+  background: var(--color-surface-2);
+}
+
+.caption {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}

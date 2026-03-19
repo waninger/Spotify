@@ -1,6 +1,6 @@
-import mockContentTreeJson from "@/components/features/reqursive-render/mock-content-tree.json";
-import mockContentTreeDeepJson from "@/components/features/reqursive-render/mock-content-tree-deep.json";
-import mockContentTreeInvalidTypeJson from "@/components/features/reqursive-render/mock-content-tree-invalid-type.json";
+import mockContentTreeJson from "@/components/features/reqursive-render/mock-data/mock-content-tree.json";
+import mockContentTreeDeepJson from "@/components/features/reqursive-render/mock-data/mock-content-tree-deep.json";
+import mockContentTreeInvalidTypeJson from "@/components/features/reqursive-render/mock-data/mock-content-tree-invalid-type.json";
 
 export type MockTreeResponse = {
   name: string;

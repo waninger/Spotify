@@ -1,0 +1,9 @@
+{
+  "type": "CALLOUT",
+  "id": "phase-2-callout",
+  "parameters": {
+    "title": "Deployment note",
+    "text": "Keep logs open during rollout so any bad release can be caught immediately."
+  },
+  "children": []
+}

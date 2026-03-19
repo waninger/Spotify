@@ -1,10 +1,14 @@
-import { ContentNode, NodeType } from "./types";
+import { ContentNode, NodeParameterValue, NodeType } from "./types";
 
 const VALID_NODE_TYPES: NodeType[] = [
+  "ROOT",
   "HEADING",
   "PARAGRAPH",
   "LIST",
   "LIST_ITEM",
+  "IMAGE",
+  "CALLOUT",
+  "LINK_CARD",
 ];
 
 function isObject(value: unknown): value is Record<string, unknown> {
@@ -13,6 +17,48 @@ function isObject(value: unknown): value is Record<string, unknown> {
 
 function isNodeType(value: unknown): value is NodeType {
   return typeof value === "string" && VALID_NODE_TYPES.includes(value as NodeType);
+}
+
+function isNodeParameterValue(value: unknown): value is NodeParameterValue {
+  if (value === null) {
+    return true;
+  }
+
+  const valueType = typeof value;
+  if (valueType === "string" || valueType === "number" || valueType === "boolean") {
+    return true;
+  }
+
+  if (Array.isArray(value)) {
+    return value.every((item) => isNodeParameterValue(item));
+  }
+
+  if (isObject(value)) {
+    return Object.values(value).every((item) => isNodeParameterValue(item));
+  }
+
+  return false;
+}
+
+function parseParameters(rawParameters: unknown, nodeId: string): Record<string, NodeParameterValue> {
+  if (rawParameters === undefined) {
+    return {};
+  }
+
+  if (!isObject(rawParameters)) {
+    throw new Error(`Invalid content node parameters for '${nodeId}': expected object.`);
+  }
+
+  const entries = Object.entries(rawParameters);
+  for (const [key, value] of entries) {
+    if (!isNodeParameterValue(value)) {
+      throw new Error(
+        `Invalid content node parameter '${key}' for '${nodeId}': unsupported value type.`,
+      );
+    }
+  }
+
+  return rawParameters as Record<string, NodeParameterValue>;
 }
 
 /**
@@ -25,7 +71,7 @@ export function translateContentTree(raw: unknown): ContentNode | null {
     throw new Error("Invalid content node: expected object.");
   }
 
-  const { type, id, children } = raw;
+  const { type, id, parameters, children } = raw;
 
   // Unknown type — silently discard this node and its entire subtree.
   if (!isNodeType(type)) {
@@ -40,6 +86,8 @@ export function translateContentTree(raw: unknown): ContentNode | null {
     throw new Error(`Invalid content node children for '${id}': expected array.`);
   }
 
+  const parsedParameters = parseParameters(parameters, id);
+
   const translatedChildren = children
     .map((child) => translateContentTree(child))
     .filter((child): child is ContentNode => child !== null);
@@ -47,6 +95,7 @@ export function translateContentTree(raw: unknown): ContentNode | null {
   return {
     type,
     id,
+    parameters: parsedParameters,
     children: translatedChildren,
   };
 }
