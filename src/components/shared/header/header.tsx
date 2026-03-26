@@ -32,6 +32,11 @@ export default async function Header(): Promise<ReactElement<unknown, string>> {
               Settings
             </Link>
           </li>
+          <li>
+            <Link href="/reqursive-render/content-tree-composer" className={styles.link}>
+              Content Tree Composer
+            </Link>
+          </li>
         </ul>
       </nav>
 

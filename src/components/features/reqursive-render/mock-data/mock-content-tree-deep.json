@@ -1,156 +1,56 @@
 {
-  "type": "HEADING",
-  "id": "doc-root",
-  "parameters": {
-    "text": "Deployment Plan"
-  },
+  "type": "ROOT",
+  "id": "9f20e76a-b6d7-4567-9856-f8f4f445147f",
+  "parameters": {},
   "children": [
     {
-      "type": "PARAGRAPH",
-      "id": "intro",
+      "type": "CALLOUT",
+      "id": "b0f04d5f-0ad9-46ec-b4eb-ebf93de31ef3",
       "parameters": {
-        "text": "Follow each phase in order."
+        "title": "Deployment note",
+        "text": "Keep logs open during rollout so any bad release can be caught immediately."
       },
       "children": []
     },
     {
-      "type": "LIST",
-      "id": "phase-list",
+      "type": "LINK_CARD",
+      "id": "508ec77d-b8d3-47e0-aaf5-6de4926fbb5e",
       "parameters": {
-        "title": "Release phases"
+        "title": "Open deploy runbook",
+        "description": "This mock card stands in for a richer linked resource component.",
+        "href": "https://example.com/runbook",
+        "label": "Open runbook"
       },
-      "children": [
-        {
-          "type": "LIST_ITEM",
-          "id": "phase-1",
-          "parameters": {
-            "text": "Prepare environment"
-          },
-          "children": [
-            {
-              "type": "PARAGRAPH",
-              "id": "phase-1-note",
-              "parameters": {
-                "text": "Install dependencies and verify credentials."
-              },
-              "children": []
-            }
-          ]
-        },
-        {
-          "type": "LIST_ITEM",
-          "id": "phase-2",
-          "parameters": {
-            "text": "Deploy services"
-          },
-          "children": [
-            {
-              "type": "CALLOUT",
-              "id": "phase-2-callout",
-              "parameters": {
-                "title": "Deployment note",
-                "text": "Keep logs open during rollout so any bad release can be caught immediately."
-              },
-              "children": []
-            },
-            {
-              "type": "LIST",
-              "id": "phase-2-substeps",
-              "parameters": {},
-              "children": [
-                {
-                  "type": "LIST_ITEM",
-                  "id": "phase-2-substep-a",
-                  "parameters": {
-                    "text": "Launch API"
-                  },
-                  "children": [
-                    {
-                      "type": "PARAGRAPH",
-                      "id": "phase-2-substep-a-detail",
-                      "parameters": {
-                        "text": "Use the production config and monitor logs."
-                      },
-                      "children": []
-                    },
-                    {
-                      "type": "LINK_CARD",
-                      "id": "phase-2-runbook",
-                      "parameters": {
-                        "title": "Open deploy runbook",
-                        "description": "This mock card stands in for a richer linked resource component.",
-                        "href": "https://example.com/runbook",
-                        "label": "Open runbook"
-                      },
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "type": "LIST_ITEM",
-                  "id": "phase-2-substep-b",
-                  "parameters": {
-                    "text": "Run validation checklist"
-                  },
-                  "children": [
-                    {
-                      "type": "LIST",
-                      "id": "phase-2-substep-b-checklist",
-                      "parameters": {},
-                      "children": [
-                        {
-                          "type": "LIST_ITEM",
-                          "id": "check-1",
-                          "parameters": {
-                            "text": "Health endpoint returns 200"
-                          },
-                          "children": []
-                        },
-                        {
-                          "type": "LIST_ITEM",
-                          "id": "check-2",
-                          "parameters": {
-                            "text": "UI smoke test passes"
-                          },
-                          "children": [
-                            {
-                              "type": "PARAGRAPH",
-                              "id": "check-2-context",
-                              "parameters": {
-                                "text": "Validate top navigation and search flow."
-                              },
-                              "children": []
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "LIST_ITEM",
-          "id": "phase-3",
-          "parameters": {
-            "text": "Finalize release notes"
-          },
-          "children": [
-            {
-              "type": "IMAGE",
-              "id": "release-preview-image",
-              "parameters": {
-                "url": "https://picsum.photos/seed/release-preview/900/520",
-                "alt": "Interface preview used in release notes.",
-                "caption": "Mock screenshot for the release summary."
-              },
-              "children": []
-            }
-          ]
-        }
-      ]
+      "children": [{
+      "type": "LINK_CARD",
+      "id": "5dfce2b9-d76a-49ee-a956-c53f7fc1fefe",
+      "parameters": {
+        "title": "Open deploy runbook",
+        "description": "This mock card stands in for a richer linked resource component.",
+        "href": "https://example.com/runbook",
+        "label": "Open runbook"
+      },
+      "children": []
+    }]
+    },
+    {
+      "type": "IMAGE",
+      "id": "d3652f79-478e-42f6-9024-7b5d9caeb6e2",
+      "parameters": {
+        "url": "https://picsum.photos/seed/release-preview/900/520",
+        "alt": "Interface preview used in release notes.",
+        "caption": "Mock screenshot for the release summary."
+      },
+      "children": [{
+      "type": "IMAGE",
+      "id": "1ec99697-14d6-44d3-9f4e-fdf9b83757a7",
+      "parameters": {
+        "url": "https://picsum.photos/seed/release-preview/900/520",
+        "alt": "Interface preview used in release notes.",
+        "caption": "Mock screenshot for the release summary."
+      },
+      "children": []
+    }]
     }
   ]
 }

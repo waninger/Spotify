@@ -14,11 +14,13 @@ type NodeRenderer = ComponentType<RenderNodeProps>;
 // Registry: map each supported node type to its renderer component.
 export const NODE_RENDERERS: Partial<Record<NodeType, NodeRenderer>> = {
   ROOT: RenderRoot,
-  HEADING: RenderHeading,
-  PARAGRAPH: RenderParagraph,
-  LIST: RenderList,
-  LIST_ITEM: RenderListItem,
   IMAGE: RenderImage,
   CALLOUT: RenderCallout,
   LINK_CARD: RenderLinkCard,
 };
+
+
+  // HEADING: RenderHeading,
+  // PARAGRAPH: RenderParagraph,
+  // LIST: RenderList,
+  // LIST_ITEM: RenderListItem,

@@ -62,11 +62,11 @@ function parseParameters(rawParameters: unknown, nodeId: string): Record<string,
 }
 
 /**
- * Converts unknown JSON data to a strongly-typed ContentNode tree.
- * Returns null for nodes with unrecognized types (discarding their entire subtree).
- * Throws only when structural fields (id, children) are missing or malformed.
+ * Normalizes unknown JSON data into a strongly-typed ContentNode tree.
+ * Validates structure, filters unknown node types (silently discards their entire subtrees),
+ * and ensures all parameters are properly typed.
  */
-export function translateContentTree(raw: unknown): ContentNode | null {
+export function normalizeContentTree(raw: unknown): ContentNode | null {
   if (!isObject(raw)) {
     throw new Error("Invalid content node: expected object.");
   }
@@ -88,14 +88,14 @@ export function translateContentTree(raw: unknown): ContentNode | null {
 
   const parsedParameters = parseParameters(parameters, id);
 
-  const translatedChildren = children
-    .map((child) => translateContentTree(child))
+  const normalizedChildren = children
+    .map((child) => normalizeContentTree(child))
     .filter((child): child is ContentNode => child !== null);
 
   return {
     type,
     id,
     parameters: parsedParameters,
-    children: translatedChildren,
+    children: normalizedChildren,
   };
 }

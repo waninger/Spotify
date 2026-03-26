@@ -1,6 +1,6 @@
 {
   "type": "IMAGE",
-  "id": "release-preview-image",
+  "id": "15d93949-e356-49d2-af1b-b0e0baef22b1",
   "parameters": {
     "url": "https://picsum.photos/seed/release-preview/900/520",
     "alt": "Interface preview used in release notes.",

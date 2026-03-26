@@ -1,28 +1,18 @@
 {
-  "type": "HEADING",
-  "id": "invalid-root",
-  "parameters": {
-    "text": "Mixed Validity Content"
-  },
+  "type": "ROOT",
+  "id": "df31f7e0-9d60-4a50-8e7b-3ecf1f6f6331",
+  "parameters": {},
   "children": [
     {
-      "type": "PARAGRAPH",
-      "id": "known-node",
-      "parameters": {
-        "text": "This one should render."
-      },
-      "children": []
-    },
-    {
       "type": "QUOTE",
-      "id": "unsupported-node-type",
+      "id": "883dbd17-f32f-4606-a636-2385dbdbf337",
       "parameters": {
         "text": "This should be discarded with its subtree."
       },
       "children": [
         {
           "type": "IMAGE",
-          "id": "nested-under-unknown",
+          "id": "369aa4ac-90dc-4cb9-a8c4-e57ce0ff988d",
           "parameters": {
             "url": "https://picsum.photos/seed/should-not-render/800/400",
             "alt": "This should never render because its parent is unknown.",
@@ -34,7 +24,7 @@
     },
     {
       "type": "CALLOUT",
-      "id": "known-callout",
+      "id": "1f7af22b-8a14-4125-8c08-5854f1f1605b",
       "parameters": {
         "title": "Still valid",
         "text": "Known siblings continue to render even when an unknown node is dropped."
