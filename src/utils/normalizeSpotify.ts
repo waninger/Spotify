@@ -1,6 +1,11 @@
 import { Album } from "@/mock-data/mock-album";
-import { Artist } from "@/mock-data/mock-artist";
+import { Artist } from "@/types/artist";
 import { Song } from "@/mock-data/mock-song";
+/**
+ * This module provides functions to normalize raw data from the Spotify API into consistent application-specific types.
+ * It includes helper functions to handle common normalization tasks such as string and number validation, as well as specific logic for artists, albums, and tracks.
+ * The normalization process ensures that the application can work with predictable data structures, even when the Spotify API responses may have missing or malformed fields.
+ */
 
 type RawSpotifyImage = {
   url?: string | null;
@@ -69,6 +74,8 @@ export type RawSpotifyAlbum = {
   type?: string | null;
 };
 
+
+/**Return data for /tracks/${id} */
 export type RawSpotifySong = {
   id?: string | null;
   name?: string | null;
@@ -85,14 +92,17 @@ export type RawSpotifySong = {
   type?: string | null;
 };
 
+/**Helper function to normalize string values */
 function normalizeString(value: string | null | undefined, fallback = ""): string {
   return typeof value === "string" ? value : fallback;
 }
 
+/**Helper function to normalize number values */
 function normalizeNumber(value: number | null | undefined, fallback = 0): number {
   return typeof value === "number" && Number.isFinite(value) ? value : fallback;
 }
 
+/**Helper function to normalize Spotify image data */
 function normalizeImages(images: RawSpotifyImage[] | null | undefined): Artist["images"] {
   return (images ?? [])
     .filter((image): image is RawSpotifyImage & { url: string } => typeof image?.url === "string")
@@ -103,6 +113,7 @@ function normalizeImages(images: RawSpotifyImage[] | null | undefined): Artist["
     }));
 }
 
+/**Helper function to normalize artist summary data */
 function normalizeArtistSummaries(
   artists: RawSpotifyArtistSummary[] | null | undefined,
 ): Song["artists"] {
@@ -172,6 +183,7 @@ export function normalizeAlbum(raw: RawSpotifyAlbum): Album {
     type: "album",
   };
 }
+
 
 export function normalizeSong(raw: RawSpotifySong): Song {
   return {

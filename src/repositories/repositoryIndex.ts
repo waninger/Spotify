@@ -1,4 +1,4 @@
-import { spotifyMockSongService, spotyfiMockArtistService, spotyfiMockAlbumService, spotifyMockSearchService, spotifySearchService, spotifySongService, spotyfiAlbumService, spotyfiArtistService} from "@/repositories/spotifyServices";
+import { spotifyMockSongService, spotyfiMockArtistService, spotyfiMockAlbumService, spotifyMockSearchService, spotifySearchService, spotifySongService, spotyfiAlbumService, spotyfiArtistService} from "@/repositories/spotify/spotifyServices";
 import { SongService, ArtistService, AlbumService, SearchService, PlaylistService } from "@/repositories/interfaces";
 import { playlistMockRepository, playlistRepository } from "@/repositories/playlistRepository"
 

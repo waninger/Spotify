@@ -1,3 +1,4 @@
+import { Artist } from "@/types/artist";
 export const artist:Artist = {
   "id": "0C0XlULifJtAgn6ZNCW2eu",
   "name": "The Killers",
@@ -18,22 +19,3 @@ export const artist:Artist = {
   },
   "type": "artist"
 }
-
-export type Artist = {
-  id: string;
-  name: string;
-  genres: string[];
-  popularity: number;
-  followers: {
-    total: number;
-  };
-  images: {
-    height: number;
-    width: number;
-    url: string;
-  }[];
-  external_urls: {
-    spotify: string;
-  };
-  type: "artist";
-};

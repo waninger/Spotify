@@ -1,10 +1,15 @@
 import { Album } from "@/mock-data/mock-album";
-import { Artist } from "@/mock-data/mock-artist";
+import { Artist } from "@/types/artist";
 import { Song } from "@/mock-data/mock-song";
 import { SearchResultAlbum, SearchResultArtist, SearchResultSong } from "@/repositories/interfaces";
 
+
+/**
+ * Converts a SearchResultAlbum object to an Album object.
+ * @param searchAlbum The SearchResultAlbum object to convert.
+ * @returns The converted Album object.
+ */
 export function convertSearchResultAlbumToAlbum(searchAlbum: SearchResultAlbum): Album {
-    console.log("Converting SearchResultAlbum to Album:", searchAlbum);
   return {
     id: searchAlbum.id,
     name: searchAlbum.name,
@@ -38,10 +43,20 @@ export function convertSearchResultAlbumToAlbum(searchAlbum: SearchResultAlbum):
   };
 }
 
+/**
+ * Converts an array of SearchResultAlbum objects to an array of Album objects.
+ * @param searchAlbums The array of SearchResultAlbum objects to convert.
+ * @returns The converted array of Album objects.
+ */
 export function convertSearchResultAlbumsToAlbums(searchAlbums: SearchResultAlbum[]): Album[] {
   return searchAlbums.map(convertSearchResultAlbumToAlbum);
 }
 
+/**
+ * Converts a SearchResultArtist object to an Artist object.
+ * @param searchArtist The SearchResultArtist object to convert.
+ * @returns The converted Artist object.
+ */
 export function convertSearchResultArtistToArtist(searchArtist: SearchResultArtist): Artist {
   return {
     id: searchArtist.id,
@@ -96,6 +111,11 @@ export function convertSearchResultSongToSong(searchSong: SearchResultSong): Son
   };
 }
 
+/**
+ * Converts an array of SearchResultSong objects to an array of Song objects.
+ * @param searchSongs The array of SearchResultSong objects to convert.
+ * @returns The converted array of Song objects.
+ */
 export function convertSearchResultSongsToSongs(searchSongs: SearchResultSong[]): Song[] {
   return searchSongs.map(convertSearchResultSongToSong);
 }
