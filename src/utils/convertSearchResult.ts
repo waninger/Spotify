@@ -1,4 +1,4 @@
-import { Album } from "@/mock-data/mock-album";
+import { Album } from "@/types/album";
 import { Artist } from "@/types/artist";
 import { Song } from "@/mock-data/mock-song";
 import { SearchResultAlbum, SearchResultArtist, SearchResultSong } from "@/repositories/interfaces";

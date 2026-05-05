@@ -1,6 +1,6 @@
 import { Song } from "@/mock-data/mock-song";
-import { Artist } from "@/types/artist";
-import { Album } from "@/mock-data/mock-album";
+import { Artist, ArtistAlbums } from "@/types/artist";
+import { Album } from "@/types/album";
 import { Playlist } from "@/types/playlist";
 
 export interface SongService {
@@ -11,6 +11,7 @@ export interface SongService {
 export interface ArtistService {
   getOne: (id: string) => Promise<Artist | null>;
   getMany: (ids: string[]) => Promise<Artist[] | null>;
+  getAlbums: (artistId: string) => Promise<ArtistAlbums | null>;
 }
 
 export interface AlbumService {

@@ -7,3 +7,42 @@
     margin: 0 auto;
     background: var(--color-bg);
 }
+
+.hero {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+    padding: 0 var(--space-4);
+}
+
+.heroImage {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--color-image-background);
+    border: 1px solid color-mix(in oklab, var(--color-border) 75%, transparent);
+}
+
+.albumsSection {
+    width: 100%;
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+
+    h2 {
+        font-size: var(--text-lg);
+        font-weight: 700;
+        color: var(--color-text);
+    }
+}
+
+.albumsGrid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    width: 100%;
+}

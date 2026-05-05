@@ -26,6 +26,12 @@ function getTokenStore(): TokenStore {
   return globalStore.__spotifyTokenStore;
 }
 
+export function invalidateSpotifyTokenCache(): void {
+  const store = getTokenStore();
+  store.cache = null;
+  store.inFlight = null;
+}
+
 export async function getSpotifyAccessToken(): Promise<string> {
   const store = getTokenStore();
   const now = Date.now();

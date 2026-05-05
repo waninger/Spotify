@@ -1,6 +1,6 @@
 import { Song, song } from "@/mock-data/mock-song";
 import { artist } from "@/mock-data/mock-artist";
-import { Artist } from "@/types/artist";
+import { Artist, ArtistAlbums } from "@/types/artist";
 import { mockSearchResult } from "@/mock-data/mock-search-result";
 import {
   SongService,
@@ -10,22 +10,26 @@ import {
   SearchResult,
   SearchType,
 } from "@/repositories/interfaces";
-import { Album, album } from "@/mock-data/mock-album";
-import { getSpotifyAccessToken } from "@/repositories/accessToken";
+import { album } from "@/mock-data/mock-album";
+import { Album } from "@/types/album";
+import { getSpotifyAccessToken, invalidateSpotifyTokenCache } from "@/repositories/accessToken";
 import {
   normalizeAlbum,
   normalizeArtist,
   normalizeSong,
+  normalizeArtistAlbums,
 } from "../../utils/normalizeSpotify";
 import type {
   RawSpotifyAlbum,
   RawSpotifyArtist,
   RawSpotifySong,
+  RawSpotifyArtistAlbums
 } from "../../utils/normalizeSpotify";
 
 const SPOTIFY_API_BASE_URL = "https://api.spotify.com/v1";
 const SEARCH_REVALIDATE_SECONDS = 5 * 60;
 const ENTITY_REVALIDATE_SECONDS = 15 * 60;
+const ARTIST_ALBUMS_MAX_LIMIT = 10; // Spotify API max limit for artist albums
 
 function dedupeIds(ids: string[]): string[] {
   return [...new Set(ids.filter(Boolean))];
@@ -34,6 +38,7 @@ function dedupeIds(ids: string[]): string[] {
 async function fetchSpotifyJson<T>(
   path: string,
   revalidateSeconds: number,
+  retry = true,
 ): Promise<T | null> {
   let accessToken: string;
 
@@ -50,10 +55,15 @@ async function fetchSpotifyJson<T>(
     next: { revalidate: revalidateSeconds },
   });
 
+  if (response.status === 401 && retry) {
+    invalidateSpotifyTokenCache();
+    return fetchSpotifyJson<T>(path, revalidateSeconds, false);
+  }
+
   if (!response.ok) {
     const errorBody = await response.text();
     console.error(
-      `Spotify API error: ${response.status} ${response.statusText} - ${errorBody}`,
+      `Spotify API error: ${response.status} ${response.statusText} - ${errorBody} | path: ${path}`,
     );
     return null;
   }
@@ -106,7 +116,7 @@ export const spotifySongService: SongService = {
   },
 };
 
-export const spotyfiAlbumService: AlbumService = {
+export const spotifyAlbumService: AlbumService = {
   async getOne(id: string): Promise<Album | null> {
     const response = await fetchSpotifyJson<RawSpotifyAlbum>(
       `/albums/${id}`,
@@ -136,7 +146,7 @@ export const spotyfiAlbumService: AlbumService = {
   },
 };
 
-export const spotyfiArtistService: ArtistService = {
+export const spotifyArtistService: ArtistService = {
   async getOne(id: string): Promise<Artist | null> {
     const response = await fetchSpotifyJson<RawSpotifyArtist>(
       `/artists/${id}`,
@@ -164,6 +174,14 @@ export const spotyfiArtistService: ArtistService = {
       )
       .map(normalizeArtist);
   },
+  getAlbums: async (artistId: string): Promise<ArtistAlbums | null> => {
+    const response = await fetchSpotifyJson<RawSpotifyArtistAlbums>(
+      `/artists/${artistId}/albums?include_groups=album&limit=${ARTIST_ALBUMS_MAX_LIMIT}`,
+      ENTITY_REVALIDATE_SECONDS,
+    );
+
+    return response ? normalizeArtistAlbums(response) : null;
+  },
 };
 
 export const spotifyMockSongService: SongService = {
@@ -178,7 +196,7 @@ export const spotifyMockSongService: SongService = {
   },
 };
 
-export const spotyfiMockArtistService: ArtistService = {
+export const spotifyMockArtistService: ArtistService = {
   async getOne(id: string): Promise<Artist | null> {
     console.log(id);
     return artist;
@@ -188,9 +206,12 @@ export const spotyfiMockArtistService: ArtistService = {
     console.log(ids);
     throw new Error("Function not implemented.");
   },
+  async getAlbums(): Promise<ArtistAlbums | null> {
+    return null;
+  },
 };
 
-export const spotyfiMockAlbumService: AlbumService = {
+export const spotifyMockAlbumService: AlbumService = {
   async getOne(id: string): Promise<Album | null> {
     console.log(id);
     return album;

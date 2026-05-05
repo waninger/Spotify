@@ -1,6 +1,7 @@
 import { Artist } from "@/types/artist";
 import styles from "./artistCard.module.scss";
 import { Link } from "@/components/ui/Link/link";
+import Image from "next/image";
 
 type ArtistCardVariant = "default" | "search";
 
@@ -19,8 +20,7 @@ export function ArtistCard({ artist, variant = "default" }: ArtistCardProps) {
     <div className={containerClass}>
       <div className={styles.avatar}>
         {imageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={imageUrl} alt={`Photo of ${artist.name}`} className={styles.avatarImage} />
+          <Image src={imageUrl} alt={`Photo of ${artist.name}`} className={styles.avatarImage} width={400} height={400} />
         ) : (
           <div className={styles.avatarFallback} aria-hidden="true" />
         )}

@@ -2,8 +2,8 @@ import { Song } from "@/mock-data/mock-song";
 import { Album } from "@/mock-data/mock-album";
 import { Artist } from "@/mock-data/mock-artist";
 import { SongCard } from "@/components/features/songs/song-card/songCard";
-import { AlbumCard } from "@/components/features/albums/album-card/albumCard";
-import { ArtistCard } from "@/components/features/artists/artist-card/artistCard";
+import { AlbumCard } from "@/components/features/albums/albumCard/albumCard";
+import { ArtistCard } from "@/components/features/artists/artistCard/artistCard";
 
 type SearchResultItem = Song | Album | Artist;
 

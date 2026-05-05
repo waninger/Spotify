@@ -1,5 +1,5 @@
-import { Album } from "@/mock-data/mock-album";
-import { Artist } from "@/types/artist";
+import { Album } from "@/types/album";
+import { Artist, ArtistAlbumItem, ArtistAlbums } from "@/types/artist";
 import { Song } from "@/mock-data/mock-song";
 /**
  * This module provides functions to normalize raw data from the Spotify API into consistent application-specific types.
@@ -90,6 +90,43 @@ export type RawSpotifySong = {
   artists?: RawSpotifyArtistSummary[] | null;
   album?: RawSpotifyAlbumSummary | null;
   type?: string | null;
+};
+
+export type RawSpotifyArtistAlbums = {
+  href?: string | null;
+  limit?: number | null;
+  next?: string | null;
+  offset?: number | null;
+  previous?: string | null;
+  total?: number | null;
+  items?: RawSpotifyArtistAlbumItem[] | null;
+};
+
+export type RawSpotifyArtistAlbumItem = {
+  album_type?: string | null;
+  total_tracks?: number | null;
+  external_urls?: RawSpotifyExternalUrls | null;
+  href?: string | null;
+  id?: string | null;
+  images?: RawSpotifyImage[] | null;
+  name?: string | null;
+  release_date?: string | null;
+  release_date_precision?: string | null;
+  restrictions?: {
+    reason?: string | null;
+  } | null;
+  type?: string | null;
+  uri?: string | null;
+  artists?: RawSpotifyArtistAlbumItemArtist[] | null;
+};
+
+export type RawSpotifyArtistAlbumItemArtist = {
+  external_urls?: RawSpotifyExternalUrls | null;
+  href?: string | null;
+  id?: string | null;
+  name?: string | null;
+  type?: string | null;
+  uri?: string | null;
 };
 
 /**Helper function to normalize string values */
@@ -207,5 +244,60 @@ export function normalizeSong(raw: RawSpotifySong): Song {
       total_tracks: normalizeNumber(raw.album?.total_tracks),
     },
     type: "track",
+  };
+}
+
+export function normalizeArtistAlbums(raw: RawSpotifyArtistAlbums): ArtistAlbums {
+  return {
+    href: normalizeString(raw.href),
+    limit: normalizeNumber(raw.limit),
+    next: normalizeString(raw.next),
+    offset: normalizeNumber(raw.offset),
+    previous: normalizeString(raw.previous),
+    total: normalizeNumber(raw.total),
+    items: (raw.items ?? [])
+      .filter(
+        (item): item is RawSpotifyArtistAlbumItem & { id: string; name: string } =>
+          typeof item?.id === "string" && typeof item?.name === "string",
+      )
+      .map(normalizeArtistAlbumItem),
+  };
+}
+
+export function normalizeArtistAlbumItem(raw: RawSpotifyArtistAlbumItem): ArtistAlbumItem {
+  return {
+    album_type: normalizeString(raw.album_type, "album"),
+    total_tracks: normalizeNumber(raw.total_tracks),
+    external_urls: {
+      spotify: normalizeString(raw.external_urls?.spotify),
+    },
+    href: normalizeString(raw.href),
+    id: normalizeString(raw.id),
+    images: normalizeImages(raw.images),
+    name: normalizeString(raw.name, "Unknown album"),
+    release_date: normalizeString(raw.release_date),
+    release_date_precision: normalizeString(raw.release_date_precision, "day"),
+    restrictions: raw.restrictions
+      ? {
+          reason: normalizeString(raw.restrictions.reason),
+        }
+      : undefined,
+    type: "album",
+    uri: normalizeString(raw.uri),
+    artists: (raw.artists ?? [])
+      .filter(
+        (artist): artist is RawSpotifyArtistAlbumItemArtist & { id: string; name: string } =>
+          typeof artist?.id === "string" && typeof artist?.name === "string",
+      )
+      .map((artist) => ({
+        external_urls: {
+          spotify: normalizeString(artist.external_urls?.spotify),
+        },
+        href: normalizeString(artist.href),
+        id: normalizeString(artist.id),
+        name: normalizeString(artist.name, "Unknown artist"),
+        type: "artist" as const,
+        uri: normalizeString(artist.uri),
+      })),
   };
 }
