@@ -1,9 +1,9 @@
 import { songProvider } from "@/repositories/repositoryIndex";
 import { auth } from "@/auth";
-import { Song } from "@/mock-data/mock-song";
+import { Song } from "@/types/song";
 import { SongCard } from "@/components/features/songs/song-card/songCard";
 import { albumProvider } from "@/repositories/repositoryIndex";
-import { Album } from "@/mock-data/mock-album";
+import { Album } from "@/types/album";
 import Image from "next/image";
 import styles from "./page.module.scss";
 import SearchBar from "@/components/shared/search-bar/searchBar";
@@ -61,11 +61,10 @@ export default async function Playlist({ params }: PlaylistProps) {
             songs.map((song, index) => (
               <li key={index} className={styles.listItem}>
                 <p>{index + 1}</p>
-                <SongCard song={song} />
-                <RemoveSongButton
-                  playlistId={playlistId}
-                  songId={song.id}
-                />
+                <SongCard song={song}>
+                  {" "}
+                  <RemoveSongButton playlistId={playlistId} songId={song.id} />
+                </SongCard>
               </li>
             ))}
         </ol>

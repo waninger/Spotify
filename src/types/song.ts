@@ -1,3 +1,5 @@
+import { SpotifyImage } from "@/types/artist";
+
 export type Song = {
   id: string;
   name: string;
@@ -8,19 +10,32 @@ export type Song = {
   track_number: number;
   disc_number: number;
   is_local: boolean;
+  is_playable: boolean;
+  uri: string;
   external_urls: {
     spotify: string;
   };
-  artists: {
-    id: string;
-    name: string;
-    type: "artist";
-  }[];
-  album: {
-    id: string;
-    name: string;
-    release_date: string;
-    total_tracks: number;
-  };
+  artists: SongArtist[];
+  album: SongAlbum;
   type: "track";
+};
+
+type SongArtist = {
+  id: string;
+  name: string;
+  type: "artist";
+  href: string;
+  uri: string;
+  external_urls: {
+    spotify: string;
+  };
+};
+
+type SongAlbum = {
+  id: string;
+  name: string;
+  album_type: string;
+  release_date: string;
+  total_tracks: number;
+  images: SpotifyImage[];
 };

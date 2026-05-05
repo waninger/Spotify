@@ -1,3 +1,32 @@
+import { SpotifyImage } from "@/types/artist";
+
+type AlbumArtist = {
+  id: string;
+  name: string;
+  type: "artist";
+  href: string;
+  uri: string;
+  external_urls: {
+    spotify: string;
+  };
+};
+
+type AlbumTrack = {
+  id: string;
+  name: string;
+  duration_ms: number;
+  explicit: boolean;
+  track_number: number;
+  disc_number: number;
+  uri: string;
+  preview_url: string | null;
+  external_urls: {
+    spotify: string;
+  };
+  artists: AlbumArtist[];
+  type: "track";
+};
+
 export type Album = {
   id: string;
   name: string;
@@ -8,29 +37,22 @@ export type Album = {
   genres: string[];
   popularity: number;
   label: string;
-  images: {
-    height: number;
-    width: number;
-    url: string;
-  }[];
-  artists: {
-    id: string;
-    name: string;
-    type: "artist";
-  }[];
+  uri: string;
+  images: SpotifyImage[];
+  artists: AlbumArtist[];
   tracks: {
-    items: {
-      id: string;
-      name: string;
-      duration_ms: number;
-      explicit: boolean;
-      track_number: number;
-      type: "track";
-    }[];
+    href: string;
     limit: number;
     offset: number;
+    next: string | null;
+    previous: string | null;
     total: number;
+    items: AlbumTrack[];
   };
+  copyrights: {
+    text: string;
+    type: string;
+  }[];
   external_urls: {
     spotify: string;
   };

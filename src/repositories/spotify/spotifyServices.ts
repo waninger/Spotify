@@ -1,4 +1,7 @@
-import { Song, song } from "@/mock-data/mock-song";
+import { song } from "@/mock-data/mock-song";
+import { Song } from "@/types/song";
+import { album } from "@/mock-data/mock-album";
+import { Album } from "@/types/album";
 import { artist } from "@/mock-data/mock-artist";
 import { Artist, ArtistAlbums } from "@/types/artist";
 import { mockSearchResult } from "@/mock-data/mock-search-result";
@@ -10,8 +13,6 @@ import {
   SearchResult,
   SearchType,
 } from "@/repositories/interfaces";
-import { album } from "@/mock-data/mock-album";
-import { Album } from "@/types/album";
 import { getSpotifyAccessToken, invalidateSpotifyTokenCache } from "@/repositories/accessToken";
 import {
   normalizeAlbum,
@@ -93,6 +94,7 @@ export const spotifySongService: SongService = {
       `/tracks/${id}`,
       ENTITY_REVALIDATE_SECONDS,
     );
+    console.log("Fetched song data:", response);
     return response ? normalizeSong(response) : null;
   },
   async getMany(ids: string[]): Promise<Song[]> {

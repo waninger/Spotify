@@ -1,6 +1,6 @@
 import { Album } from "@/types/album";
 import { Artist } from "@/types/artist";
-import { Song } from "@/mock-data/mock-song";
+import { Song } from "@/types/song";
 import { SearchResultAlbum, SearchResultArtist, SearchResultSong } from "@/repositories/interfaces";
 
 
@@ -20,6 +20,7 @@ export function convertSearchResultAlbumToAlbum(searchAlbum: SearchResultAlbum):
     genres: [],
     popularity: 0,
     label: "",
+    uri: `spotify:album:${searchAlbum.id}`,
     images: searchAlbum.images?.map(img => ({
       height: img.height,
       width: img.width,
@@ -28,16 +29,25 @@ export function convertSearchResultAlbumToAlbum(searchAlbum: SearchResultAlbum):
     artists: searchAlbum.artists?.map(artist => ({
       id: artist.id,
       name: artist.name,
-      type: "artist" as const
+      type: "artist" as const,
+      href: `https://api.spotify.com/v1/artists/${artist.id}`,
+      uri: `spotify:artist:${artist.id}`,
+      external_urls: {
+        spotify: `https://open.spotify.com/artist/${artist.id}`
+      }
     })),
     tracks: {
+      href: "",
       items: [],
       limit: 0,
       offset: 0,
+      next: null,
+      previous: null,
       total: 0
     },
+    copyrights: [],
     external_urls: {
-      spotify: ""
+      spotify: `https://open.spotify.com/album/${searchAlbum.id}`
     },
     type: "album" as const
   };
@@ -93,19 +103,28 @@ export function convertSearchResultSongToSong(searchSong: SearchResultSong): Son
     track_number: 1,
     disc_number: 1,
     is_local: false,
+    is_playable: true,
+    uri: `spotify:track:${searchSong.id}`,
     external_urls: {
-      spotify: ""
+      spotify: `https://open.spotify.com/track/${searchSong.id}`
     },
     artists: searchSong.artists.map(artist => ({
       id: artist.id,
       name: artist.name,
-      type: "artist" as const
+      type: "artist" as const,
+      href: `https://api.spotify.com/v1/artists/${artist.id}`,
+      uri: `spotify:artist:${artist.id}`,
+      external_urls: {
+        spotify: `https://open.spotify.com/artist/${artist.id}`
+      }
     })),
     album: {
       id: searchSong.album.id,
       name: searchSong.album.name,
+      album_type: searchSong.album.type,
       release_date: new Date().toISOString().split('T')[0],
-      total_tracks: 0
+      total_tracks: 0,
+      images: searchSong.album.images
     },
     type: "track" as const
   };

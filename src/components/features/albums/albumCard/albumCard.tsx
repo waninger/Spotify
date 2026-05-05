@@ -1,4 +1,4 @@
-import { Album } from "@/mock-data/mock-album";
+import { Album } from "@/types/album";
 import styles from "./albumCard.module.scss";
 import { Link } from "@/components/ui/Link/link";
 

@@ -1,6 +1,6 @@
-import { Song } from "@/mock-data/mock-song";
-import { Album } from "@/mock-data/mock-album";
-import { Artist } from "@/mock-data/mock-artist";
+import { Song } from "@/types/song";
+import { Album } from "@/types/album";
+import { Artist } from "@/types/artist";
 import { SongCard } from "@/components/features/songs/song-card/songCard";
 import { AlbumCard } from "@/components/features/albums/albumCard/albumCard";
 import { ArtistCard } from "@/components/features/artists/artistCard/artistCard";
@@ -20,6 +20,8 @@ export default function SearchResult({ result }: SearchResultProps) {
       return <AlbumCard album={result} variant="search" />;
     case "artist":
       return <ArtistCard artist={result} variant="search" />;
+    default:
+      return null;
   }
 
   return <div>Unknown result type</div>;

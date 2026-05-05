@@ -1,4 +1,4 @@
-import { Song } from "@/mock-data/mock-song";
+import { Song } from "@/types/song";
 import { Artist, ArtistAlbums } from "@/types/artist";
 import { Album } from "@/types/album";
 import { Playlist } from "@/types/playlist";
